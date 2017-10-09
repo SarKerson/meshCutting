@@ -105,17 +105,8 @@ void drawPoint(double* p, vtkRenderer* r)
     vtkSmartPointer<vtkActor> a = vtkSmartPointer<vtkActor>::New();
     a->SetMapper(m);
     r->AddActor(a);
-  // vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
-  // reader->SetFileName("/home/sar/Desktop/My_test/vtk_code/data/Bone.stl");
-  // reader->Update();
-  // return reader->GetOutput();
 }
 
-
-void boundsWorldToViewMaxPositionOfZ(double* _bounds, vtkRenderer* render)
-{
-
-}
 
 
 void addPoint(double* p, vtkRenderer* render)
@@ -160,6 +151,7 @@ void addPoint(double* p, vtkRenderer* render)
   }
   cv::Vec3f vpoint(point[0], point[1], point[2]);
   vPoints1.push_back(vpoint);
+
   // drawPoint(point, render);
 }
 
@@ -302,6 +294,8 @@ private:
   // vtkSmartPointer<PlanesCutter> cutter;
 };
 
+
+
 /*
 vtkSmartPointer<myCallback> callback = vtkSmartPointer<myCallback>::New();
 callback->SetObject(contourRep);
@@ -371,6 +365,14 @@ public:
           std::cout << "The world position of the " << i << " node is:" << po[0] << " " << po[1] << " " << po[2] << std::endl;
         // UpdatePlaneCollection(PlaneSet, po);
       }
+    }
+
+    if (getkey == 'c') {
+        cout << "Delete all node" << endl;
+        acContour->ClearAllNodes();
+        vPoints1.clear();
+        frontPlane = NULL;
+        iren->Render();
     }
   }
   // void setCutter(vtkSmartPointer<PlanesCutter> cutter) {
