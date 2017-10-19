@@ -53,19 +53,49 @@
 #include <vtkLinearExtrusionFilter.h>
 #include <vtkMath.h>
 
-
+vtkSmartPointer<vtkPolygonalSurfacePointPlacer> pointPlacer;
 
 vtkSmartPointer<vtkPolyData> clipSource;
-vtkSmartPointer<vtkPolyData> clipperData;
+
 std::vector<cv::Vec3f> vPoints1;
 
 
-vtkSmartPointer<vtkTriangleFilter> trifilter;
+vtkSmartPointer<vtkPlane> frontPlane = NULL;
 
+/**
+ * renderer in diff view port
+ */
 vtkSmartPointer<vtkRenderer> leftrenderer;
 vtkSmartPointer<vtkRenderer> midrender;
 vtkSmartPointer<vtkRenderer> rightrender;
-vtkSmartPointer<vtkPlane> frontPlane = NULL;
+
+
+
+/**
+ * actors in diff renderer
+ */
+std::vector<vtkActor*> vleftActors;
+vtkSmartPointer<vtkActor> midActor;
+vtkSmartPointer<vtkActor> rightActor;
+vtkSmartPointer<vtkActor> clipperActor;   //----------------------------------------
+
+/**
+ * polydata of the actors
+ */
+std::vector<vtkPolyData*> vleftPolydatas;
+vtkSmartPointer<vtkPolyData> mid_data;
+vtkSmartPointer<vtkPolyData> right_data;
+vtkSmartPointer<vtkTriangleFilter> trifilter;     //the output of trifilter is polydata of the clipper
+
+
+
+/** 
+ * the plane souce for points placing
+ */
+vtkSmartPointer<vtkPlaneSource> thePlane;
+vtkSmartPointer<vtkActor> thePlaneActor;
+
+
 
 double *center;
 double *bounds;
@@ -73,6 +103,60 @@ double g_normal[3];
 double g_origin[3];
 double g_distance = 0;
 
+
+/**
+ * 
+ */
+void parallelplane(vtkRenderer* ren1, vtkPlaneSource* plane)
+{
+  double a_view[3] = { 0.0,0.0,0.0 };
+  double b_view[3] = { 0.0,1.0,0.0 };
+  double c_view[3] = { 1.0,0.0,0.0 };
+  ren1->ViewToWorld(a_view[0], a_view[1], a_view[2]);
+  ren1->ViewToWorld(b_view[0], b_view[1], b_view[2]);
+  ren1->ViewToWorld(c_view[0], c_view[1], c_view[2]);
+  double e1[3] = { c_view[0] - a_view[0],
+    c_view[1] - a_view[1],
+    c_view[2] - a_view[2] };
+  double e2[3] = { b_view[0] - a_view[0],
+    b_view[1] - a_view[1],
+    b_view[2] - a_view[2] };
+  double normal[3];
+  vtkMath::Cross(e2, e1, normal);
+  vtkMath::Normalize(normal);
+
+  plane->SetNormal(normal);
+  plane->Update();
+}
+/**
+ * 
+ */
+
+double calscale(vtkActor* clipActor)
+{
+  double bounds[6];
+  for (int cc = 0; cc < 6; cc++)
+  {
+    bounds[cc] = clipActor->GetBounds()[cc];
+    cout << bounds[cc] << endl;
+  }
+  double xscale = fabs(bounds[1] - bounds[0]);
+  double yscale = fabs(bounds[3] - bounds[2]);
+  double zscale = fabs(bounds[5] - bounds[4]);
+  double scale = xscale*yscale;
+  if (xscale*zscale > scale)
+  {
+    scale = xscale*zscale;
+  }
+  else if (yscale*zscale > scale)
+  {
+    scale = yscale*zscale;
+  }
+  return scale;
+}
+/**
+ * 
+ */
 
 
 double maximumLength(double* _bounds)
@@ -108,7 +192,6 @@ void drawPoint(double* p, vtkRenderer* r)
 }
 
 
-
 void addPoint(double* p, vtkRenderer* render)
 {
   if(frontPlane == NULL) {
@@ -139,6 +222,7 @@ void addPoint(double* p, vtkRenderer* render)
 
     frontPlane->SetOrigin(a_view);
     frontPlane->SetNormal(normal);
+
   }
 
   //front face
@@ -190,12 +274,11 @@ void generateClipperData()
     vtkSmartPointer<vtkDataSetMapper>::New();
   mapper->SetInputConnection(trifilter->GetOutputPort());
  
-  vtkSmartPointer<vtkActor> actor = 
-    vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper(mapper);
-  actor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
+  clipperActor = vtkSmartPointer<vtkActor>::New();
+  clipperActor->SetMapper(mapper);
+  clipperActor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
 
-  leftrenderer->AddActor(actor);
+  leftrenderer->AddActor(clipperActor);
 
 } 
   
@@ -219,34 +302,52 @@ void generateClippedByBool()
   vtkSmartPointer<vtkBooleanOperationPolyDataFilter> booleanOperation =  
     vtkSmartPointer<vtkBooleanOperationPolyDataFilter>::New(); 
   booleanOperation->SetOperationToIntersection();
-  booleanOperation->SetInputData( 1, clipSource );
+  booleanOperation->SetInputData( 1, vleftPolydatas[vleftPolydatas.size() - 1] );
   booleanOperation->SetInputData(0, trifilter->GetOutput()); // set the input data  
   vtkSmartPointer<vtkPolyDataMapper> booleanOperationMapper =  
   vtkSmartPointer<vtkPolyDataMapper>::New();  
   booleanOperationMapper->SetInputConnection( booleanOperation->GetOutputPort() );  
   booleanOperationMapper->ScalarVisibilityOff();  
-  vtkSmartPointer<vtkActor> booleanOperationActor = vtkSmartPointer<vtkActor>::New();  
-  booleanOperationActor->SetMapper( booleanOperationMapper );
-  midrender->AddActor(booleanOperationActor);
+  midActor = vtkSmartPointer<vtkActor>::New();  
+  midActor->SetMapper( booleanOperationMapper );
+  midrender->AddActor(midActor);
+  mid_data = booleanOperation->GetOutput();
 
 
   vtkSmartPointer<vtkBooleanOperationPolyDataFilter> booleanOperation1 =  
     vtkSmartPointer<vtkBooleanOperationPolyDataFilter>::New(); 
   booleanOperation1->SetOperationToDifference();
-  booleanOperation1->SetInputData( 0, clipSource );
+  booleanOperation1->SetInputData( 0, vleftPolydatas[vleftPolydatas.size() - 1] );
   booleanOperation1->SetInputData(1, trifilter->GetOutput());
 
   vtkSmartPointer<vtkPolyDataMapper> booleanOperationMapper1 =  
   vtkSmartPointer<vtkPolyDataMapper>::New();  
   booleanOperationMapper1->SetInputConnection( booleanOperation1->GetOutputPort() );  
   booleanOperationMapper1->ScalarVisibilityOff();  
-  vtkSmartPointer<vtkActor> booleanOperationActor1 = vtkSmartPointer<vtkActor>::New();  
-  booleanOperationActor1->SetMapper( booleanOperationMapper1 );
-  rightrender->AddActor(booleanOperationActor1);
+  rightActor = vtkSmartPointer<vtkActor>::New();  
+  rightActor->SetMapper( booleanOperationMapper1 );
+  rightrender->AddActor( rightActor );
+  right_data = booleanOperation1->GetOutput();
 
 }
 
 
+/**
+ * [clear all the points]
+ * @param contour [the contour of a widget]
+ */
+void clearAllNodes(vtkOrientedGlyphContourRepresentation* contour)
+{
+  cout << "Delete all node" << endl;
+  contour->ClearAllNodes();
+  vPoints1.clear();
+  frontPlane = NULL; 
+}
+
+
+/**
+ * a class that deal with points putting
+ */
 class PointsPut :public vtkCommand
 {
 public:
@@ -270,38 +371,20 @@ public:
       addPoint(po, acContour->GetRenderer());
     }
     else if(eventId == vtkCommand::RightButtonReleaseEvent) {
-      num = acContour->GetNumberOfNodes();
-      acContour->GetNthNodeWorldPosition(num-1,po);
-      addPoint(po, acContour->GetRenderer());
-
-      generateClipperData();
-
-      generateClippedByBool();  //draw in mid and right
-      midrender->SetActiveCamera(leftrenderer->GetActiveCamera());
-      rightrender->SetActiveCamera(leftrenderer->GetActiveCamera());
-
-      vtkRenderWindowInteractor *iren = static_cast<vtkRenderWindowInteractor*>(caller);
-      iren->Render();
+      
     }
   }
 
-  // void setCutter(vtkSmartPointer<PlanesCutter> cutter) {
-  //   this->cutter = cutter;
-  // }
 
 private:
   vtkOrientedGlyphContourRepresentation* acContour;
-  // vtkSmartPointer<PlanesCutter> cutter;
 };
 
 
 
-/*
-vtkSmartPointer<myCallback> callback = vtkSmartPointer<myCallback>::New();
-callback->SetObject(contourRep);
-iren->AddObserver(vtkCommand::LeftButtonReleaseEvent, callback);
-*/
-
+/**
+ * a class that deal with the points deleting
+ */
 class PointDelete : public vtkCommand
 {
 public:
@@ -321,16 +404,64 @@ public:
       cout << "Delete the last node" << endl;
       acContour->DeleteLastNode();
       vPoints1.pop_back();
-      iren->Render();
     }
+    if (getkey == '1') {                    //move the actor in port_1 to port_0
+      leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
+      leftrenderer->RemoveActor(clipperActor);
+      leftrenderer->RemoveActor(thePlaneActor);
+      midrender->RemoveActor(midActor);
+      rightrender->RemoveActor(rightActor);
+      vleftActors.push_back(midActor);
+      vleftPolydatas.push_back(mid_data);
+      clearAllNodes(acContour);
+      leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
+      pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
+    }
+    if (getkey == '2') {                  //move the actor in port_2 to port_0
+      leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
+      leftrenderer->RemoveActor(clipperActor);
+      midrender->RemoveActor(midActor);
+      rightrender->RemoveActor(rightActor);
+      vleftActors.push_back(rightActor);
+      vleftPolydatas.push_back(right_data);
+      clearAllNodes(acContour);
+      leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
+      pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
+    }
+    if (getkey == '0') {                  //return the last actor in the port_0
+      assert(vleftActors.size() == vleftPolydatas.size());
+      if (vleftActors.size() != 1) {
+        vtkActor* actor = vleftActors[vleftActors.size() - 1];
+        leftrenderer->RemoveActor(actor);
+        leftrenderer->RemoveActor(clipperActor);
+        vleftActors.pop_back();
+        actor->Delete();
+
+        vtkPolyData* polyData = vleftPolydatas[vleftPolydatas.size() - 1];
+        vleftPolydatas.pop_back();
+        polyData->Delete();
+
+        leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
+        clearAllNodes(acContour);
+        pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
+
+      }
+    }
+    if (getkey == 'n') {
+
+      generateClipperData();
+
+      generateClippedByBool();  //draw in mid and right
+
+
+      midrender->SetActiveCamera(leftrenderer->GetActiveCamera());
+      rightrender->SetActiveCamera(leftrenderer->GetActiveCamera());
+    }
+    iren->Render();
   }
-  // void setCutter(vtkSmartPointer<PlanesCutter> cutter) {
-  //   this->cutter = cutter;
-  // }
 
 private:
   vtkOrientedGlyphContourRepresentation* acContour;
-  // vtkSmartPointer<PlanesCutter> cutter;
 };
 
 
@@ -347,10 +478,7 @@ public:
   {
     acContour = contour;
   }
-  // void GetPlane(vtkPlaneCollection* planes)
-  // {
-  //   PlaneSet = planes;
-  // }
+
   virtual void Execute(vtkObject* caller, unsigned long eventId, void* callData)
   {
     vtkRenderWindowInteractor *iren = static_cast<vtkRenderWindowInteractor*>(caller);
@@ -358,29 +486,21 @@ public:
     if (getkey == 'r') {
       cout << "Display positions of all nodes" << endl;
       num = acContour->GetNumberOfNodes();
-      // PlaneSet->RemoveAllItems();
       for (int i = 0; i < num; i++)
       {
           acContour->GetNthNodeWorldPosition(i, po);
           std::cout << "The world position of the " << i << " node is:" << po[0] << " " << po[1] << " " << po[2] << std::endl;
-        // UpdatePlaneCollection(PlaneSet, po);
       }
     }
 
     if (getkey == 'c') {
-        cout << "Delete all node" << endl;
-        acContour->ClearAllNodes();
-        vPoints1.clear();
-        frontPlane = NULL;
-        iren->Render();
+        clearAllNodes(acContour);
     }
+    iren->Render();
   }
-  // void setCutter(vtkSmartPointer<PlanesCutter> cutter) {
-  //   this->cutter = cutter;
-  // }
+
 private:
   vtkOrientedGlyphContourRepresentation* acContour;
-  // vtkSmartPointer<PlanesCutter> cutter;
 };
 
 
@@ -392,6 +512,7 @@ void UpdatePlaneCollection(vtkPlaneCollection* ps, double po[3])
   ps->AddItem(newlyadd);
   cout << "point successfully added!" << endl;
 }
+
 
 
 /*
@@ -407,6 +528,7 @@ vtkPolyData* extractExtra(vtkPolyData *complete, vtkPolyData *part)
   booleanOperation->SetInputData( 0, complete );
     booleanOperation->SetInputData( 1, part );  
     data = booleanOperation->GetOutput();
+
     return data;
 }
 
@@ -430,7 +552,7 @@ vtkSmartPointer<vtkPolyData> getPolyData()
 
 
   vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
-  reader->SetFileName("/home/sar/Desktop/My_test/vtk_code/data/Implant.stl");
+  reader->SetFileName("../data/Bone.stl");
   reader->Update();
 
   vtkSmartPointer<vtkTransform> pTransform = vtkSmartPointer<vtkTransform>::New();
@@ -538,11 +660,11 @@ vtkSmartPointer<vtkPlaneCollection> getPlanesCollection(double* center,
 
 int main (int argc, char *argv[])
 {
+
   // PolyData to process
   
   
   clipSource = getPolyData();
-
   center = clipSource->GetCenter();
   bounds = clipSource->GetBounds();
 
@@ -553,8 +675,8 @@ int main (int argc, char *argv[])
   vtkSmartPointer<vtkDataSetMapper> sourceMapper =
     vtkSmartPointer<vtkDataSetMapper>::New();
   sourceMapper->SetInputData(clipSource);
-  // clipMapper1->SetInputConnection(clipper->GetOutputPort());
 
+ 
   vtkSmartPointer<vtkActor> sourceActor =
     vtkSmartPointer<vtkActor>::New();
   sourceActor->SetMapper(sourceMapper);
@@ -563,20 +685,46 @@ int main (int argc, char *argv[])
   sourceActor->SetOrigin(0, 0, 0);
   sourceActor->GetProperty()->SetInterpolationToFlat();
 
+/**
+ * 
+ */
+  double scale = calscale(sourceActor);
+
+  //------------------make a plane----------------------------
+////create the invisible plane
+  thePlane = vtkSmartPointer<vtkPlaneSource>::New();
+  vtkSmartPointer<vtkDataSetMapper> planeMapper =
+    vtkSmartPointer<vtkDataSetMapper>::New();
+  planeMapper->SetInputConnection(thePlane->GetOutputPort());
+  thePlaneActor = vtkSmartPointer<vtkActor>::New();
+  thePlaneActor->SetMapper(planeMapper);
+  thePlaneActor->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
+  thePlaneActor->GetProperty()->SetInterpolationToFlat();
+  thePlaneActor->GetProperty()->SetOpacity(0.1);
+  thePlaneActor->GetProperty()->SetLighting(1);
+  thePlaneActor->SetScale(scale / 5);
+
+//---------------------------------------------------------------
+//
+
+  /**
+   * add to the vector
+   */
+  vleftActors.push_back(sourceActor);
+  vleftPolydatas.push_back(clipSource);
 
 
 
   // A renderer and render window
   leftrenderer = vtkSmartPointer<vtkRenderer>::New();
   leftrenderer->SetViewport(0.0, 0.0, 0.4, 1.0);
-  leftrenderer->SetBackground(0, 0, 1);
+  leftrenderer->SetBackground(0.3, 0.3, 0.3);
   midrender = vtkSmartPointer<vtkRenderer>::New();
   midrender->SetViewport(0.4, 0.0, 0.7, 1.0);
-  midrender->SetBackground(0, 1, 0);
+  midrender->SetBackground(0.35, 0.35, 0.35);
   rightrender = vtkSmartPointer<vtkRenderer>::New();
   rightrender->SetViewport(0.7, 0, 1.0, 1.0);
-  rightrender->SetBackground(1, 0, 0);
-
+  rightrender->SetBackground(0.4, 0.4, 0.4);
 
 
   vtkSmartPointer<vtkRenderWindow> renderWindow = 
@@ -585,6 +733,7 @@ int main (int argc, char *argv[])
   renderWindow->AddRenderer(midrender);
   renderWindow->AddRenderer(rightrender);
   leftrenderer->AddActor(sourceActor);
+  leftrenderer->AddActor(thePlaneActor);
   leftrenderer->ResetCamera();
   midrender->ResetCamera();
   rightrender->ResetCamera();
@@ -594,6 +743,9 @@ int main (int argc, char *argv[])
   vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor = 
     vtkSmartPointer<vtkRenderWindowInteractor>::New();
   renderWindowInteractor->SetRenderWindow(renderWindow);
+
+
+
 //----------------start call back----------------------------------
 
   vtkOrientedGlyphContourRepresentation *contourRep =
@@ -602,9 +754,9 @@ int main (int argc, char *argv[])
   vtkContourWidget *contourWidget = vtkContourWidget::New();
   contourWidget->SetInteractor(renderWindowInteractor);
   contourWidget->SetRepresentation(contourRep);
-  vtkPolygonalSurfacePointPlacer * pointPlacer
-    = vtkPolygonalSurfacePointPlacer::New();
+  pointPlacer = vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
   pointPlacer->AddProp(sourceActor);
+  pointPlacer->AddProp(thePlaneActor);
   contourRep->SetPointPlacer(pointPlacer);
   vtkLinearContourLineInterpolator * interpolator =
     vtkLinearContourLineInterpolator::New();
@@ -631,7 +783,7 @@ int main (int argc, char *argv[])
 //----------------end call back-------------------------------------------------
 
 
-
+  parallelplane(leftrenderer, thePlane);             //problem here?  data after actor
 
   renderWindow->Render();
   renderWindowInteractor->Initialize();
