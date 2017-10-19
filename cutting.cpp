@@ -53,6 +53,14 @@
 #include <vtkLinearExtrusionFilter.h>
 #include <vtkMath.h>
 
+
+/**
+ * scale of the plane to ensure the enough area
+ */
+double scale = 1;
+
+
+
 vtkSmartPointer<vtkPolygonalSurfacePointPlacer> pointPlacer;
 
 vtkSmartPointer<vtkPolyData> clipSource;
@@ -105,10 +113,11 @@ double g_distance = 0;
 
 
 /**
- * 
+ * return a actor of a parallel plane; every time the actor will new a memory
  */
-void parallelplane(vtkRenderer* ren1, vtkPlaneSource* plane)
+void parallelplane(vtkRenderer* ren1, vtkSmartPointer<vtkActor> & thePlaneActor/*vtkPlaneSource* plane*/)
 {
+  vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
   double a_view[3] = { 0.0,0.0,0.0 };
   double b_view[3] = { 0.0,1.0,0.0 };
   double c_view[3] = { 1.0,0.0,0.0 };
@@ -127,6 +136,17 @@ void parallelplane(vtkRenderer* ren1, vtkPlaneSource* plane)
 
   plane->SetNormal(normal);
   plane->Update();
+
+  vtkSmartPointer<vtkDataSetMapper> planeMapper =
+    vtkSmartPointer<vtkDataSetMapper>::New();
+  planeMapper->SetInputConnection(plane->GetOutputPort());
+  thePlaneActor = vtkSmartPointer<vtkActor>::New();
+  thePlaneActor->SetMapper(planeMapper);
+  thePlaneActor->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
+  thePlaneActor->GetProperty()->SetInterpolationToFlat();
+  thePlaneActor->GetProperty()->SetOpacity(0.1);
+  thePlaneActor->GetProperty()->SetLighting(1);
+  thePlaneActor->SetScale(scale / 5);
 }
 /**
  * 
@@ -333,15 +353,17 @@ void generateClippedByBool()
 
 
 /**
- * [clear all the points]
+ * [clear all the points, and generate a new plane for points placing]
  * @param contour [the contour of a widget]
  */
-void clearAllNodes(vtkOrientedGlyphContourRepresentation* contour)
+void clearAllNodes(vtkOrientedGlyphContourRepresentation* contour, vtkRenderer* render)
 {
   cout << "Delete all node" << endl;
   contour->ClearAllNodes();
   vPoints1.clear();
   frontPlane = NULL; 
+
+
 }
 
 
@@ -413,18 +435,19 @@ public:
       rightrender->RemoveActor(rightActor);
       vleftActors.push_back(midActor);
       vleftPolydatas.push_back(mid_data);
-      clearAllNodes(acContour);
+      clearAllNodes(acContour, leftrenderer);
       leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
       pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
     }
     if (getkey == '2') {                  //move the actor in port_2 to port_0
       leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
       leftrenderer->RemoveActor(clipperActor);
+      leftrenderer->RemoveActor(thePlaneActor);
       midrender->RemoveActor(midActor);
       rightrender->RemoveActor(rightActor);
       vleftActors.push_back(rightActor);
       vleftPolydatas.push_back(right_data);
-      clearAllNodes(acContour);
+      clearAllNodes(acContour, leftrenderer);
       leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
       pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
     }
@@ -434,6 +457,7 @@ public:
         vtkActor* actor = vleftActors[vleftActors.size() - 1];
         leftrenderer->RemoveActor(actor);
         leftrenderer->RemoveActor(clipperActor);
+        leftrenderer->RemoveActor(thePlaneActor);
         vleftActors.pop_back();
         actor->Delete();
 
@@ -442,7 +466,7 @@ public:
         polyData->Delete();
 
         leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
-        clearAllNodes(acContour);
+        clearAllNodes(acContour, leftrenderer);
         pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
 
       }
@@ -494,7 +518,7 @@ public:
     }
 
     if (getkey == 'c') {
-        clearAllNodes(acContour);
+        clearAllNodes(acContour, leftrenderer);
     }
     iren->Render();
   }
@@ -688,24 +712,8 @@ int main (int argc, char *argv[])
 /**
  * 
  */
-  double scale = calscale(sourceActor);
+  scale = calscale(sourceActor);
 
-  //------------------make a plane----------------------------
-////create the invisible plane
-  thePlane = vtkSmartPointer<vtkPlaneSource>::New();
-  vtkSmartPointer<vtkDataSetMapper> planeMapper =
-    vtkSmartPointer<vtkDataSetMapper>::New();
-  planeMapper->SetInputConnection(thePlane->GetOutputPort());
-  thePlaneActor = vtkSmartPointer<vtkActor>::New();
-  thePlaneActor->SetMapper(planeMapper);
-  thePlaneActor->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
-  thePlaneActor->GetProperty()->SetInterpolationToFlat();
-  thePlaneActor->GetProperty()->SetOpacity(0.1);
-  thePlaneActor->GetProperty()->SetLighting(1);
-  thePlaneActor->SetScale(scale / 5);
-
-//---------------------------------------------------------------
-//
 
   /**
    * add to the vector
@@ -725,6 +733,11 @@ int main (int argc, char *argv[])
   rightrender = vtkSmartPointer<vtkRenderer>::New();
   rightrender->SetViewport(0.7, 0, 1.0, 1.0);
   rightrender->SetBackground(0.4, 0.4, 0.4);
+
+
+//------------------make a plane----------------------------
+  parallelplane(leftrenderer, thePlaneActor);
+//---------------------------------------------------------------
 
 
   vtkSmartPointer<vtkRenderWindow> renderWindow = 
@@ -781,9 +794,6 @@ int main (int argc, char *argv[])
   renderWindowInteractor->AddObserver(vtkCommand::LeftButtonReleaseEvent, poput);
   renderWindowInteractor->AddObserver(vtkCommand::RightButtonReleaseEvent, poput);
 //----------------end call back-------------------------------------------------
-
-
-  parallelplane(leftrenderer, thePlane);             //problem here?  data after actor
 
   renderWindow->Render();
   renderWindowInteractor->Initialize();
