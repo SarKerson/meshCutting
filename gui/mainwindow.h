@@ -1,46 +1,33 @@
-#ifndef SideBySideRenderWindowsQt_H
-#define SideBySideRenderWindowsQt_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
 
 #include <vtkSmartPointer.h>
 #include <vtkEventQtSlotConnect.h>
-
 #include <QMainWindow>
 #include <QMenu>
 #include <QAction>
+#include "ui_mainwindow.h"
 
-#include "ui_SideBySideRenderWindowsQt.h"
-
-//class QAction;
-//class QMenu;
 class vtkOrientedGlyphContourRepresentation;
 class KeyboardEvent;
 class PointsPut;
 
-class SideBySideRenderWindowsQt : public QMainWindow, private Ui::SideBySideRenderWindowsQt
+class MainWindow : public QMainWindow, private Ui::mainwindow
 {
-  Q_OBJECT
+    Q_OBJECT
+
 public:
-
-//protected:
-//#ifndef QT_NO_CONTEXTMENU
-//    void contextMenuEvent(QContextMenuEvent *event) override;
-//#endif // QT_NO_CONTEXTMENU
-
-
-  // Constructor/Destructor
-  SideBySideRenderWindowsQt(); 
-  ~SideBySideRenderWindowsQt() {};
-
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow() {}
 public:
   vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
   vtkSmartPointer<vtkOrientedGlyphContourRepresentation> acContour;
-//  vtkSmartPointer<PointsPut> poput;
-//  vtkSmartPointer<KeyboardEvent> key;
   vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowLeft;
   vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowMid;
   vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowRight;
-
-
+public:
+  void reRenderAll();
 
 public slots:
 
@@ -61,6 +48,8 @@ public slots:
   void objectMode();
   void makeUnion();
   void importFile();
+  void addPaper();
+
 
 private:
 
@@ -84,6 +73,9 @@ private:
 
   QAction * key_n_act;
 
+  QAction * addpaper_act;//
+
+
 };
 
-#endif
+#endif // MAINWINDOW_H
