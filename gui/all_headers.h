@@ -1,5 +1,5 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#ifndef ALL_HEADERS_H
+#define ALL_HEADERS_H
 #include <vtkVersion.h>
 #include <vtkSmartPointer.h>
 #include <vtkSTLReader.h>
@@ -44,6 +44,7 @@
 #include <vtkConeSource.h>
 #include <vtkPolygon.h>
 #include <vtkDelaunay2D.h>
+#include <opencv2/opencv.hpp>
 #include <vtkBox.h>
 #include <vtkElevationFilter.h>
 #include <vtkImplicitBoolean.h>
@@ -53,5 +54,20 @@
 #include <vtkTriangleFilter.h>
 #include <vtkLinearExtrusionFilter.h>
 #include <vtkMath.h>
+#include <vtkDataObjectToTable.h>
+#include "vtkGenericOpenGLRenderWindow.h"
+#include <vtkPolyDataMapper.h>
+#include <vtkQtTableView.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkSphereSource.h>
+#include <vtkCubeSource.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <QToolBar>
+#include <QMenuBar>
+#include <QFileDialog>
+#include <vtkSTLWriter.h>
+#include <iostream>
+#include <string.h>
 
-#endif // FUNCTIONS_H
+#endif // ALL_HEADERS_H
