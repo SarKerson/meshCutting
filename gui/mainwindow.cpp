@@ -497,6 +497,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->key_u_act, SIGNAL(triggered()), this, SLOT(makeUnion()));
     connect(this->import_act, SIGNAL(triggered()), this, SLOT(importFile()));
     connect(this->addpaper_act, SIGNAL(triggered()), this, SLOT(addPaper()));
+//    connect(this->scale_down_act, SIGNAL(triggered()), this, SLOT(scaling_down()));
+//    connect(this->scale_up_act, SIGNAL(triggered()), this, SLOT(scaling_up()));
+
 
 }
 
@@ -525,12 +528,20 @@ void MainWindow::keyboard()
             this->cut();
         }
 
-        if (getkey == ',') {
+        if (getkey == '1') {
             this->cameraMode();
         }
 
-        if (getkey == '.') {
+        if (getkey == '2') {
             this->objectMode();
+        }
+
+        if (getkey == ',') {
+            this->scaling_down();
+        }
+
+        if (getkey == '.') {
+            this->scaling_up();
         }
     }
     reRenderAll();
@@ -819,7 +830,7 @@ void MainWindow::importFile()
     //next version use mode to choose whether to edit or cut
     QString filename = QFileDialog :: getOpenFileName(this, NULL, NULL, "*.stl");
 
-    ear = getPolyData(filename);
+    vtkSmartPointer<vtkPolyData> ear = getPolyData(filename);
     assert(ear != NULL);
 
     vimportPolydatas.push_back(ear);
@@ -851,8 +862,7 @@ void MainWindow::makeUnion()
             vtkSmartPointer<vtkMatrix4x4>::New();
 
         vtkSmartPointer<vtkActor> & earActor1 = vimportActor[vimportActor.size() - 1];
-        earActor1->GetMatrix(mat
-                             );
+        earActor1->GetMatrix(mat);
         vtkSmartPointer<vtkTransform> trans =
             vtkSmartPointer<vtkTransform>::New();
         trans->SetMatrix(mat);
@@ -930,8 +940,97 @@ void MainWindow::reRenderAll()
 }
 
 
+void MainWindow::scaling_down()
+{
+    vtkSmartPointer<vtkPolyData>  ear = vimportPolydatas[vimportPolydatas.size() - 1];
 
+    vtkSmartPointer<vtkMatrix4x4> matr = vtkSmartPointer<vtkMatrix4x4>::New();
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (i == j) {
+                matr->SetElement(i, j, 0.9);
+            }
+            else {
+                matr->SetElement(i, j, 0.0);
+            }
+        }
+    }
+    matr->SetElement(3, 3, 1.0);
+    vtkSmartPointer<vtkTransform> trans =
+        vtkSmartPointer<vtkTransform>::New();
+    trans->SetMatrix(matr);
+    vtkSmartPointer<vtkTransformPolyDataFilter> transdata =
+        vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+    transdata->SetInputData(ear);
+    transdata->SetTransform(trans);
+    transdata->Update();
+    ear = transdata->GetOutput();
 
+    vimportPolydatas.pop_back();
+    vimportPolydatas.push_back(ear);
+
+    vtkSmartPointer<vtkDataSetMapper> earMapper =
+        vtkSmartPointer<vtkDataSetMapper>::New();
+    earMapper->SetInputData(ear);
+
+    vtkSmartPointer<vtkActor> earActor1 = vtkSmartPointer<vtkActor>::New();
+    earActor1->SetMapper(earMapper);
+    earActor1->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
+    earActor1->GetProperty()->SetInterpolationToFlat();
+    leftrenderer->RemoveActor(vimportActor[vimportActor.size() - 1]);   //last actor
+    vimportActor.pop_back();
+    vimportActor.push_back(earActor1);
+    leftrenderer->AddActor(earActor1);
+
+    reRenderAll();
+}
+
+void MainWindow::scaling_up()
+{
+    vtkSmartPointer<vtkPolyData>  ear = vimportPolydatas[vimportPolydatas.size() - 1];
+
+    vtkSmartPointer<vtkMatrix4x4> matr =
+        vtkSmartPointer<vtkMatrix4x4>::New();
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (i == j) {
+                matr->SetElement(i, j, 1.1);
+            }
+            else {
+                matr->SetElement(i, j, 0.0);
+            }
+        }
+    }
+    matr->SetElement(3, 3, 1.0);
+    vtkSmartPointer<vtkTransform> trans =
+        vtkSmartPointer<vtkTransform>::New();
+    trans->SetMatrix(matr);
+    vtkSmartPointer<vtkTransformPolyDataFilter> transdata =
+        vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+    transdata->SetInputData(ear);
+    transdata->SetTransform(trans);
+    transdata->Update();
+    ear = transdata->GetOutput();
+
+    vimportPolydatas.pop_back();
+    vimportPolydatas.push_back(ear);
+
+    vtkSmartPointer<vtkDataSetMapper> earMapper =
+        vtkSmartPointer<vtkDataSetMapper>::New();
+    earMapper->SetInputData(ear);
+
+    vtkSmartPointer<vtkActor> earActor1 = vtkSmartPointer<vtkActor>::New();
+    earActor1->SetMapper(earMapper);
+    earActor1->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
+    earActor1->GetProperty()->SetInterpolationToFlat();
+    leftrenderer->RemoveActor(vimportActor[vimportActor.size() - 1]);   //last actor
+    vimportActor.pop_back();
+    vimportActor.push_back(earActor1);
+    leftrenderer->AddActor(earActor1);
+
+    reRenderAll();
+
+}
 
 
 
