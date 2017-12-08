@@ -44,7 +44,7 @@
 #include <vtkConeSource.h>
 #include <vtkPolygon.h>
 #include <vtkDelaunay2D.h>
-#include <opencv2/opencv.hpp>
+
 #include <vtkBox.h>
 #include <vtkElevationFilter.h>
 #include <vtkImplicitBoolean.h>
