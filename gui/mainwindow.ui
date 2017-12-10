@@ -24,36 +24,38 @@
    </size>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QVTKOpenGLWidget" name="qvtkWidgetLeft" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>270</width>
-      <height>530</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QVTKOpenGLWidget" name="qvtkWidgetMid" native="true">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>20</y>
-      <width>270</width>
-      <height>260</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QVTKOpenGLWidget" name="qvtkWidgetRight" native="true">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>290</y>
-      <width>270</width>
-      <height>260</height>
-     </rect>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" rowspan="2">
+     <widget class="QVTKOpenGLWidget" name="qvtkWidgetLeft" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QVTKOpenGLWidget" name="qvtkWidgetMid" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QVTKOpenGLWidget" name="qvtkWidgetRight" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <action name="actionOpenFile">
    <property name="enabled">
@@ -114,3 +116,4 @@
  <resources/>
  <connections/>
 </ui>
+
