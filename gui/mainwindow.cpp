@@ -52,6 +52,8 @@ vtkSmartPointer<vtkPolyData> ear = NULL;
  */
 vtkSmartPointer<vtkActor> thePlaneActor = NULL;
 
+vtkSmartPointer<vtkMatrix4x4> remat = vtkSmartPointer<vtkMatrix4x4>::New();
+
 double *center;
 double *bounds;
 double g_normal[3];
@@ -418,8 +420,6 @@ MainWindow::MainWindow(QWidget *parent) :
     key_c_act = NULL;
     key_k_act = NULL;
 
-    key_s_act = NULL;
-    key_a_act = NULL;
     key_u_act = NULL;
 
     QToolBar * toolBar = addToolBar(tr("&toolBar"));
@@ -431,10 +431,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->key_n_act = new QAction(tr("&cut"), this);
 
     this->import_act = new QAction(tr("import"), this);
-    this->key_s_act = new QAction(tr("objectMode"), this);
-    this->key_a_act = new QAction(tr("cameraMode"), this);
     this->key_u_act = new QAction(tr("union"), this);
     this->addpaper_act = new QAction(tr("addPaper"), this);
+    this->reset_act = new QAction(tr("reset"), this);
 
     toolBar->addAction(key_0_act);
     toolBar->addAction(key_c_act);
@@ -443,10 +442,9 @@ MainWindow::MainWindow(QWidget *parent) :
     toolBar->addAction(key_1_act);
     toolBar->addAction(key_2_act);
     toolBar->addAction(import_act);
-    toolBar->addAction(key_s_act);
-    toolBar->addAction(key_a_act);
     toolBar->addAction(key_u_act);
     toolBar->addAction(addpaper_act);
+    toolBar->addAction(reset_act);
 
     /*
     init three render windows
@@ -492,15 +490,56 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->key_k_act, SIGNAL(triggered()), this, SLOT(deleteLastPoint()));
     connect(this->key_n_act, SIGNAL(triggered()), this, SLOT(cut()));
 
-    connect(this->key_s_act, SIGNAL(triggered()), this, SLOT(objectMode()));
-    connect(this->key_a_act, SIGNAL(triggered()), this, SLOT(cameraMode()));
     connect(this->key_u_act, SIGNAL(triggered()), this, SLOT(makeUnion()));
     connect(this->import_act, SIGNAL(triggered()), this, SLOT(importFile()));
     connect(this->addpaper_act, SIGNAL(triggered()), this, SLOT(addPaper()));
+    connect(this->reset_act, SIGNAL(triggered()), this, SLOT(reSet()));
 //    connect(this->scale_down_act, SIGNAL(triggered()), this, SLOT(scaling_down()));
 //    connect(this->scale_up_act, SIGNAL(triggered()), this, SLOT(scaling_up()));
 
 
+}
+
+void MainWindow::reSet()
+{
+    if (acContour != NULL) {
+        acContour->ClearAllNodes();
+    }
+    vPoints1.clear();
+
+    if (vleftActors.size() > 0) {
+        leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
+        removeRecentActor();
+    }
+    if (thePlaneActor) {
+        removeThePlane();
+    }
+
+    leftrenderer->RemoveAllViewProps();
+    rightrender->RemoveAllViewProps();
+    midrender->RemoveAllViewProps();
+
+    vleftActors.clear();
+    vleftPolydatas.clear();
+    vimportPolydatas.clear();
+    vimportActor.clear();
+
+    thePlaneActor = NULL;
+    ear = NULL;
+    CUTTING_MODE = 1;
+    frontPlane = NULL;
+    clipSource = NULL;
+    midActor = NULL;
+    rightActor = NULL;
+    this->acContour = NULL;
+    midActor = NULL;
+    rightActor = NULL;
+    mid_data = NULL;
+    right_data = NULL;
+    trifilter = NULL;
+    remat->Zero();
+
+    reRenderAll();
 }
 
 void MainWindow::mouse()
@@ -557,22 +596,24 @@ void MainWindow::openFile()
         midActor = NULL;
         rightActor = NULL;
         cout << "init..." << endl;
+        remat->Zero();
 
-        if (acContour != NULL) {
-            acContour->ClearAllNodes();
-        }
-        vPoints1.clear();
 
-        if (vleftActors.size() > 0) {
-            leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
-            removeRecentActor();
-        }
-        if (thePlaneActor) {
-            removeThePlane();
-        }
+//        if (acContour != NULL) {
+//            acContour->ClearAllNodes();
+//        }
+//        vPoints1.clear();
 
-        vleftActors.clear();
-        vleftPolydatas.clear();
+//        if (vleftActors.size() > 0) {
+//            leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
+//            removeRecentActor();
+//        }
+//        if (thePlaneActor) {
+//            removeThePlane();
+//        }
+
+//        vleftActors.clear();
+//        vleftPolydatas.clear();
 
 
         //pop, clear all datas to inition
@@ -642,6 +683,10 @@ void MainWindow::openFile()
         // Set up action signals and slots
         this->m_Connections->Connect(renderWindowLeft->GetInteractor(),
                  vtkCommand::LeftButtonReleaseEvent,
+                 this,
+                 SLOT(mouse()));
+        this->m_Connections->Connect(renderWindowLeft->GetInteractor(),
+                 vtkCommand::RightButtonReleaseEvent,
                  this,
                  SLOT(mouse()));
         this->m_Connections->Connect(renderWindowLeft->GetInteractor(),
@@ -944,6 +989,32 @@ void MainWindow::scaling_down()
 {
     vtkSmartPointer<vtkPolyData>  ear = vimportPolydatas[vimportPolydatas.size() - 1];
 
+    int flag = 0;
+    vtkSmartPointer<vtkMatrix4x4> remat1 = vtkSmartPointer<vtkMatrix4x4>::New();
+    vtkSmartPointer<vtkActor> & earActor = vimportActor[vimportActor.size() - 1];
+    earActor->GetMatrix(remat1);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (remat1->GetElement(i, j) == remat->GetElement(i, j)) {
+                flag = flag + 1;
+            }
+            else {
+                remat->SetElement(i, j, remat1->GetElement(i, j));
+            }
+        }
+    }
+    if (flag != 16) {
+        vtkSmartPointer<vtkTransform> trans =
+            vtkSmartPointer<vtkTransform>::New();
+        trans->SetMatrix(remat1);
+        vtkSmartPointer<vtkTransformPolyDataFilter> transdata =
+            vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+        transdata->SetInputData(ear);
+        transdata->SetTransform(trans);
+        transdata->Update();
+        ear = transdata->GetOutput();
+    }
+
     vtkSmartPointer<vtkMatrix4x4> matr = vtkSmartPointer<vtkMatrix4x4>::New();
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -988,6 +1059,33 @@ void MainWindow::scaling_down()
 void MainWindow::scaling_up()
 {
     vtkSmartPointer<vtkPolyData>  ear = vimportPolydatas[vimportPolydatas.size() - 1];
+
+    int flag = 0;
+    vtkSmartPointer<vtkMatrix4x4> remat1 = vtkSmartPointer<vtkMatrix4x4>::New();
+    vtkSmartPointer<vtkActor> & earActor = vimportActor[vimportActor.size() - 1];
+    earActor->GetMatrix(remat1);
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (remat1->GetElement(i, j) == remat->GetElement(i, j)) {
+                flag = flag + 1;
+            }
+            else {
+                remat->SetElement(i, j, remat1->GetElement(i, j));
+            }
+        }
+    }
+    if (flag != 16) {
+        vtkSmartPointer<vtkTransform> trans =
+            vtkSmartPointer<vtkTransform>::New();
+        trans->SetMatrix(remat1);
+        vtkSmartPointer<vtkTransformPolyDataFilter> transdata =
+            vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+        transdata->SetInputData(ear);
+        transdata->SetTransform(trans);
+        transdata->Update();
+        ear = transdata->GetOutput();
+    }
+
 
     vtkSmartPointer<vtkMatrix4x4> matr =
         vtkSmartPointer<vtkMatrix4x4>::New();
