@@ -4,6 +4,8 @@
 
 using namespace std;
 
+static bool FIRSTOPEN = true;
+
 vtkSmartPointer<vtkPolygonalSurfacePointPlacer> pointPlacer;
 
 vtkSmartPointer<vtkPolyData> clipSource = NULL;
@@ -519,6 +521,7 @@ void MainWindow::reSet()
     rightrender->RemoveAllViewProps();
     midrender->RemoveAllViewProps();
 
+
     vleftActors.clear();
     vleftPolydatas.clear();
     vimportPolydatas.clear();
@@ -660,6 +663,7 @@ void MainWindow::openFile()
 
 
         this->renderWindowInteractor = renderWindowLeft->GetInteractor();
+        this->renderWindowInteractor->ReInitialize();
 
         //----------------start call back----------------------------------
 
@@ -680,6 +684,8 @@ void MainWindow::openFile()
         //----------------end call back-------------------------------------------------
 
 
+    }
+    if (FIRSTOPEN) {
         // Set up action signals and slots
         this->m_Connections->Connect(renderWindowLeft->GetInteractor(),
                  vtkCommand::LeftButtonReleaseEvent,
@@ -693,6 +699,7 @@ void MainWindow::openFile()
                  vtkCommand::KeyReleaseEvent,
                  this,
                  SLOT(keyboard()));
+        FIRSTOPEN = false;
     }
     reRenderAll();
 }
