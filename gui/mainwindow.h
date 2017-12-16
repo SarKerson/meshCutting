@@ -53,6 +53,8 @@ public slots:
   void scaling_up();
   void scaling_down();
 
+  void reSet();
+
 
 private:
 
@@ -68,8 +70,6 @@ private:
   QAction * key_1_act;              //select the first module
   QAction * key_2_act;              //select the second mudule
 
-  QAction * key_a_act;              //camera mode   : 1
-  QAction * key_s_act;              //object mode   : 2
   QAction * key_u_act;              //union
 
   QAction * import_act;             //import file
@@ -77,6 +77,8 @@ private:
   QAction * key_n_act;
 
   QAction * addpaper_act;//
+
+  QAction * reset_act;
 
 //  QAction * scale_up_act;
 //  QAction * scale_down_act;
