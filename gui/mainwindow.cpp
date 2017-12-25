@@ -4,6 +4,8 @@
 
 using namespace std;
 
+static bool FIRSTOPEN = true;
+
 vtkSmartPointer<vtkPolygonalSurfacePointPlacer> pointPlacer;
 
 vtkSmartPointer<vtkPolyData> clipSource = NULL;
@@ -206,7 +208,7 @@ double calscale(vtkActor* clipActor)
   for (int cc = 0; cc < 6; cc++)
   {
     bounds[cc] = clipActor->GetBounds()[cc];
-    cout << bounds[cc] << endl;
+//    cout << bounds[cc] << endl;
   }
   double xscale = fabs(bounds[1] - bounds[0]);
   double yscale = fabs(bounds[3] - bounds[2]);
@@ -255,7 +257,7 @@ void addPoint(double* p, vtkRenderer* render)
 
     if (CUTTING_MODE) {
         if(frontPlane == NULL) {
-          cout << "generate a plane" << endl;
+//          cout << "generate a plane" << endl;
           frontPlane = vtkSmartPointer<vtkPlane>::New();
       /**
        * add the plane actor here for points placing
@@ -265,7 +267,7 @@ void addPoint(double* p, vtkRenderer* render)
 
         double * point = new double[3];
         frontPlane->ProjectPoint(p, g_origin, g_normal, point);
-        cout << point[0] << ", " << point[1] << ", " << point[2] << endl;
+//        cout << point[0] << ", " << point[1] << ", " << point[2] << endl;
         double distance = sqrt(vtkMath::Distance2BetweenPoints(p, point));
         if (distance > g_distance) {
           g_distance = distance;
@@ -291,7 +293,7 @@ void generateClipperData()
       }
       vtkSmartPointer<vtkPolygon> polygon4 = vtkSmartPointer<vtkPolygon>::New();
       polygon4->GetPointIds()->SetNumberOfIds(vPoints1.size());
-      cout << vPoints1.size();
+//      cout << vPoints1.size();
       for(int i = 0; i < vPoints1.size(); ++i) {
         polygon4->GetPointIds()->SetId(i, i);
       }
@@ -519,6 +521,7 @@ void MainWindow::reSet()
     rightrender->RemoveAllViewProps();
     midrender->RemoveAllViewProps();
 
+
     vleftActors.clear();
     vleftPolydatas.clear();
     vimportPolydatas.clear();
@@ -619,67 +622,75 @@ void MainWindow::openFile()
         //pop, clear all datas to inition
         QString filename = QFileDialog :: getOpenFileName(this, NULL, NULL, "*.stl");
 
-        clipSource = getPolyData(filename);
+        if (filename != "") {
+            clipSource = getPolyData(filename);
 
 
-        assert(clipSource != NULL);
+            assert(clipSource != NULL);
 
-        // PolyData to process
-        center = clipSource->GetCenter();
-        cout << "center: " << center[0] << " " << center[1] << " " << center[2] << endl;
-        bounds = clipSource->GetBounds();
+            // PolyData to process
+            center = clipSource->GetCenter();
+    //        cout << "center: " << center[0] << " " << center[1] << " " << center[2] << endl;
+            bounds = clipSource->GetBounds();
 
-        //create mapper and actor for each polyData
-        vtkSmartPointer<vtkDataSetMapper> sourceMapper =
-        vtkSmartPointer<vtkDataSetMapper>::New();
-        sourceMapper->SetInputData(clipSource);
+            //create mapper and actor for each polyData
+            vtkSmartPointer<vtkDataSetMapper> sourceMapper =
+            vtkSmartPointer<vtkDataSetMapper>::New();
+            sourceMapper->SetInputData(clipSource);
 
-        vtkSmartPointer<vtkActor> sourceActor =
-        vtkSmartPointer<vtkActor>::New();
-        sourceActor->SetMapper(sourceMapper);
-        sourceActor->GetProperty()->SetColor(1.0000,0.3882,0.2784);
-        sourceActor->GetProperty()->SetInterpolationToFlat();
+            vtkSmartPointer<vtkActor> sourceActor =
+            vtkSmartPointer<vtkActor>::New();
+            sourceActor->SetMapper(sourceMapper);
+            sourceActor->GetProperty()->SetColor(1.0000,0.3882,0.2784);
+            sourceActor->GetProperty()->SetInterpolationToFlat();
 
-        scale = calscale(sourceActor);
+            scale = calscale(sourceActor);
 
-        // vector
-        vleftActors.push_back(sourceActor);
-        vleftPolydatas.push_back(clipSource);
-
-
-        leftrenderer->AddActor(sourceActor);
-
-        leftrenderer->ResetCamera();
-        midrender->ResetCamera();
-        rightrender->ResetCamera();
-
-        //------------------make a plane----------------------------
-//        parallelplane(leftrenderer);                  ??
-        //---------------------------------------------------------------
+            // vector
+            vleftActors.push_back(sourceActor);
+            vleftPolydatas.push_back(clipSource);
 
 
+            leftrenderer->AddActor(sourceActor);
 
-        this->renderWindowInteractor = renderWindowLeft->GetInteractor();
+            leftrenderer->ResetCamera();
+            midrender->ResetCamera();
+            rightrender->ResetCamera();
 
-        //----------------start call back----------------------------------
-
-        this->acContour = vtkOrientedGlyphContourRepresentation::New();
-
-        vtkContourWidget *contourWidget = vtkContourWidget::New();
-        contourWidget->SetInteractor(renderWindowInteractor);
-        contourWidget->SetRepresentation(acContour);
-        pointPlacer = vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
-        pointPlacer->AddProp(sourceActor);
-        acContour->SetPointPlacer(pointPlacer);
-        vtkLinearContourLineInterpolator * interpolator =
-        vtkLinearContourLineInterpolator::New();
-        acContour->SetLineInterpolator(interpolator);
-        contourWidget->SetEnabled(1);
+            //------------------make a plane----------------------------
+    //        parallelplane(leftrenderer);                  ??
+            //---------------------------------------------------------------
 
 
-        //----------------end call back-------------------------------------------------
+
+            this->renderWindowInteractor = renderWindowLeft->GetInteractor();
+            this->renderWindowInteractor->ReInitialize();
+
+            //----------------start call back----------------------------------
+
+            this->acContour = vtkOrientedGlyphContourRepresentation::New();
+
+            vtkContourWidget *contourWidget = vtkContourWidget::New();
+            contourWidget->SetInteractor(renderWindowInteractor);
+            contourWidget->SetRepresentation(acContour);
+            pointPlacer = vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
+            pointPlacer->AddProp(sourceActor);
+            acContour->SetPointPlacer(pointPlacer);
+            vtkLinearContourLineInterpolator * interpolator =
+            vtkLinearContourLineInterpolator::New();
+            acContour->SetLineInterpolator(interpolator);
+            contourWidget->SetEnabled(1);
 
 
+            //----------------end call back-------------------------------------------------
+        }
+        else {
+            cout << "invalid file." << endl;
+            return;
+        }
+
+    }
+    if (FIRSTOPEN) {
         // Set up action signals and slots
         this->m_Connections->Connect(renderWindowLeft->GetInteractor(),
                  vtkCommand::LeftButtonReleaseEvent,
@@ -693,6 +704,7 @@ void MainWindow::openFile()
                  vtkCommand::KeyReleaseEvent,
                  this,
                  SLOT(keyboard()));
+        FIRSTOPEN = false;
     }
     reRenderAll();
 }
