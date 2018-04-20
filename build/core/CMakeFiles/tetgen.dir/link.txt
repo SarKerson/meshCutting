@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC     -shared -Wl,-soname,libtetgen.so -o ../../lib/libtetgen.so CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.o CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.o 
