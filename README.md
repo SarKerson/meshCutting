@@ -1,6 +1,6 @@
 # MESHCUTTING
 ------
-
+[![asciicast](https://asciinema.org/a/42383.png)](https://asciinema.org/a/42383)
 该软件主要用于，对导入的三维网格模型进行简单多边形切割操作；并可以与导入的三维网格进行合并生成新的三维网格模型的操作，总结起来有以下功能：
 
 > * 简单多边形切割
