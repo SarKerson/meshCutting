@@ -58,4 +58,5 @@ inmesh(no)->paper->addpoint1
 ccut(no)->addpoint1
 ccut(yes)->import->trans->union->save->e
 ```
-
+**自定义多边形切割示例**
+![test](./img/cutting.png)
