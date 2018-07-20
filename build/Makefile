@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sar/SarKerson/qt_test/meshCutting
+CMAKE_SOURCE_DIR = /home/sar/SarKerson/meshCutting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sar/SarKerson/qt_test/meshCutting/build
+CMAKE_BINARY_DIR = /home/sar/SarKerson/meshCutting/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles /home/sar/SarKerson/meshCutting/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -109,19 +109,6 @@ preinstall/fast:
 depend:
 	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
-
-#=============================================================================
-# Target rules for targets named console
-
-# Build rule for target.
-console: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 console
-.PHONY : console
-
-# fast build rule for target.
-console/fast:
-	$(MAKE) -f console/CMakeFiles/console.dir/build.make console/CMakeFiles/console.dir/build
-.PHONY : console/fast
 
 #=============================================================================
 # Target rules for targets named strutil
@@ -196,7 +183,6 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... console"
 	@echo "... strutil"
 	@echo "... cellPicker"
 	@echo "... tetgen"

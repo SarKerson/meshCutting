@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sar/SarKerson/qt_test/meshCutting/core/gui/main.cpp" "/home/sar/SarKerson/qt_test/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o"
-  "/home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.cpp" "/home/sar/SarKerson/qt_test/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o"
-  "/home/sar/SarKerson/qt_test/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp" "/home/sar/SarKerson/qt_test/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o"
+  "/home/sar/SarKerson/meshCutting/core/gui/main.cpp" "/home/sar/SarKerson/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o"
+  "/home/sar/SarKerson/meshCutting/core/gui/mainwindow.cpp" "/home/sar/SarKerson/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o"
+  "/home/sar/SarKerson/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp" "/home/sar/SarKerson/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -44,8 +44,8 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/sar/SarKerson/qt_test/meshCutting/build/core/CMakeFiles/tetgen.dir/DependInfo.cmake"
-  "/home/sar/SarKerson/qt_test/meshCutting/build/core/CMakeFiles/cellPicker.dir/DependInfo.cmake"
+  "/home/sar/SarKerson/meshCutting/build/core/CMakeFiles/tetgen.dir/DependInfo.cmake"
+  "/home/sar/SarKerson/meshCutting/build/core/CMakeFiles/cellPicker.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

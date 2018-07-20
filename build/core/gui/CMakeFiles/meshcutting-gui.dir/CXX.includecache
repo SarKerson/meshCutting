@@ -6,19 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/home/sar/SarKerson/qt_test/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp
+/home/sar/SarKerson/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp
 moc_mainwindow.cpp
-/home/sar/SarKerson/qt_test/meshCutting/build/core/gui/moc_mainwindow.cpp
+/home/sar/SarKerson/meshCutting/build/core/gui/moc_mainwindow.cpp
 
-/home/sar/SarKerson/qt_test/meshCutting/build/core/gui/moc_mainwindow.cpp
-../../../core/gui/mainwindow.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.h
+/home/sar/SarKerson/meshCutting/build/core/gui/moc_mainwindow.cpp
+../../../../../../../opt/codes/SarKerson/meshCutting/core/gui/mainwindow.h
+/opt/codes/SarKerson/meshCutting/core/gui/mainwindow.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/cellPicker.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/cellPicker.h
 vtkCellPicker.h
 -
 vtkIdTypeArray.h
@@ -38,17 +38,17 @@ vtkRendererCollection.h
 vtkDataSetSurfaceFilter.h
 -
 vtkInteractorStyleTrackballCamera.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/vtkInteractorStyleTrackballCamera.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/vtkInteractorStyleTrackballCamera.h
 vtkDataSetMapper.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/vtkDataSetMapper.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/vtkDataSetMapper.h
 vtkUnstructuredGrid.h
 -
 vtkRenderWindow.h
 -
 vtkRenderWindowInteractor.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/vtkRenderWindowInteractor.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/vtkRenderWindowInteractor.h
 
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/all_headers.h
+/home/sar/SarKerson/meshCutting/core/gui/all_headers.h
 vtkVersion.h
 -
 vtkSmartPointer.h
@@ -158,7 +158,7 @@ vtkMath.h
 vtkDataObjectToTable.h
 -
 vtkGenericOpenGLRenderWindow.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/vtkGenericOpenGLRenderWindow.h
+/home/sar/SarKerson/meshCutting/core/gui/vtkGenericOpenGLRenderWindow.h
 vtkPolyDataMapper.h
 -
 vtkQtTableView.h
@@ -189,34 +189,34 @@ vtkDataSetSurfaceFilter.h
 -
 vtkOBJReader.h
 -
+vtkInteractorStyleJoystickActor.h
+-
 
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/main.cpp
+/home/sar/SarKerson/meshCutting/core/gui/main.cpp
 vtkAutoInit.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/vtkAutoInit.h
+/home/sar/SarKerson/meshCutting/core/gui/vtkAutoInit.h
 mainwindow.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.h
+/home/sar/SarKerson/meshCutting/core/gui/mainwindow.h
 QApplication
 -
 QSurfaceFormat
 -
 QVTKOpenGLWidget.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/QVTKOpenGLWidget.h
+/home/sar/SarKerson/meshCutting/core/gui/QVTKOpenGLWidget.h
 
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.cpp
+/home/sar/SarKerson/meshCutting/core/gui/mainwindow.cpp
 mainwindow.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.h
+/home/sar/SarKerson/meshCutting/core/gui/mainwindow.h
 ui_mainwindow.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/ui_mainwindow.h
+/home/sar/SarKerson/meshCutting/core/gui/ui_mainwindow.h
 all_headers.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/all_headers.h
-unistd.h
--
+/home/sar/SarKerson/meshCutting/core/gui/all_headers.h
 ../tetgen/include/tetgen.h
-/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/include/tetgen.h
+/home/sar/SarKerson/meshCutting/core/tetgen/include/tetgen.h
 ../cellPicker/include/cellPicker.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/cellPicker.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/cellPicker.h
 
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.h
+/home/sar/SarKerson/meshCutting/core/gui/mainwindow.h
 vtkSmartPointer.h
 -
 vtkEventQtSlotConnect.h
@@ -227,10 +227,12 @@ QMenu
 -
 QAction
 -
+QComboBox
+-
 ui_mainwindow.h
-/home/sar/SarKerson/qt_test/meshCutting/core/gui/ui_mainwindow.h
+/home/sar/SarKerson/meshCutting/core/gui/ui_mainwindow.h
 
-/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/include/tetgen.h
+/home/sar/SarKerson/meshCutting/core/tetgen/include/tetgen.h
 stdio.h
 -
 stdlib.h
@@ -1422,6 +1424,10 @@ qapplication.h
 qbuttongroup.h
 /home/sar/anaconda2/include/qt/QtWidgets/qbuttongroup.h
 
+/home/sar/anaconda2/include/qt/QtWidgets/QComboBox
+qcombobox.h
+/home/sar/anaconda2/include/qt/QtWidgets/qcombobox.h
+
 /home/sar/anaconda2/include/qt/QtWidgets/QFileDialog
 qfiledialog.h
 /home/sar/anaconda2/include/qt/QtWidgets/qfiledialog.h
@@ -1532,6 +1538,16 @@ limits.h
 
 /home/sar/anaconda2/include/qt/QtWidgets/qbuttongroup.h
 QtCore/qobject.h
+-
+
+/home/sar/anaconda2/include/qt/QtWidgets/qcombobox.h
+QtWidgets/qwidget.h
+-
+QtWidgets/qabstractitemdelegate.h
+-
+QtCore/qabstractitemmodel.h
+-
+QtCore/qvariant.h
 -
 
 /home/sar/anaconda2/include/qt/QtWidgets/qdesktopwidget.h
@@ -1723,6 +1739,22 @@ QtGui/qkeysequence.h
 -
 QtGui/qevent.h
 -
+
+/opt/codes/SarKerson/meshCutting/core/gui/mainwindow.h
+vtkSmartPointer.h
+-
+vtkEventQtSlotConnect.h
+-
+QMainWindow
+-
+QMenu
+-
+QAction
+-
+QComboBox
+-
+ui_mainwindow.h
+/opt/codes/SarKerson/meshCutting/core/gui/ui_mainwindow.h
 
 /usr/local/include/vtk-8.1/QVTKInteractor.h
 vtkGUISupportQtModule.h
@@ -2353,6 +2385,12 @@ vtkRenderingCoreModule.h
 /usr/local/include/vtk-8.1/vtkRenderingCoreModule.h
 vtkInteractorObserver.h
 /usr/local/include/vtk-8.1/vtkInteractorObserver.h
+
+/usr/local/include/vtk-8.1/vtkInteractorStyleJoystickActor.h
+vtkInteractionStyleModule.h
+/usr/local/include/vtk-8.1/vtkInteractionStyleModule.h
+vtkInteractorStyle.h
+/usr/local/include/vtk-8.1/vtkInteractorStyle.h
 
 /usr/local/include/vtk-8.1/vtkInteractorStyleTrackballActor.h
 vtkInteractionStyleModule.h

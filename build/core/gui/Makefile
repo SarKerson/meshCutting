@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sar/SarKerson/qt_test/meshCutting
+CMAKE_SOURCE_DIR = /home/sar/SarKerson/meshCutting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sar/SarKerson/qt_test/meshCutting/build
+CMAKE_BINARY_DIR = /home/sar/SarKerson/meshCutting/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles /home/sar/SarKerson/qt_test/meshCutting/build/core/gui/CMakeFiles/progress.marks
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	cd /home/sar/SarKerson/meshCutting/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles /home/sar/SarKerson/meshCutting/build/core/gui/CMakeFiles/progress.marks
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/clean
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/preinstall
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/preinstall
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/sar/SarKerson/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 core/gui/CMakeFiles/meshcutting-gui.dir/rule:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/CMakeFiles/meshcutting-gui.dir/rule
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/CMakeFiles/meshcutting-gui.dir/rule
 .PHONY : core/gui/CMakeFiles/meshcutting-gui.dir/rule
 
 # Convenience name for target.
@@ -122,12 +122,12 @@ meshcutting-gui: core/gui/CMakeFiles/meshcutting-gui.dir/rule
 
 # fast build rule for target.
 meshcutting-gui/fast:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/build
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/build
 .PHONY : meshcutting-gui/fast
 
 # Convenience name for target.
 core/gui/CMakeFiles/meshcutting-gui_automoc.dir/rule:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/CMakeFiles/meshcutting-gui_automoc.dir/rule
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/gui/CMakeFiles/meshcutting-gui_automoc.dir/rule
 .PHONY : core/gui/CMakeFiles/meshcutting-gui_automoc.dir/rule
 
 # Convenience name for target.
@@ -137,7 +137,7 @@ meshcutting-gui_automoc: core/gui/CMakeFiles/meshcutting-gui_automoc.dir/rule
 
 # fast build rule for target.
 meshcutting-gui_automoc/fast:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui_automoc.dir/build.make core/gui/CMakeFiles/meshcutting-gui_automoc.dir/build
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui_automoc.dir/build.make core/gui/CMakeFiles/meshcutting-gui_automoc.dir/build
 .PHONY : meshcutting-gui_automoc/fast
 
 main.o: main.cpp.o
@@ -146,7 +146,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -155,7 +155,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -164,7 +164,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 mainwindow.o: mainwindow.cpp.o
@@ -173,7 +173,7 @@ mainwindow.o: mainwindow.cpp.o
 
 # target to build an object file
 mainwindow.cpp.o:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o
 .PHONY : mainwindow.cpp.o
 
 mainwindow.i: mainwindow.cpp.i
@@ -182,7 +182,7 @@ mainwindow.i: mainwindow.cpp.i
 
 # target to preprocess a source file
 mainwindow.cpp.i:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.i
 .PHONY : mainwindow.cpp.i
 
 mainwindow.s: mainwindow.cpp.s
@@ -191,7 +191,7 @@ mainwindow.s: mainwindow.cpp.s
 
 # target to generate assembly for a file
 mainwindow.cpp.s:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.s
 .PHONY : mainwindow.cpp.s
 
 meshcutting-gui_automoc.o: meshcutting-gui_automoc.cpp.o
@@ -200,7 +200,7 @@ meshcutting-gui_automoc.o: meshcutting-gui_automoc.cpp.o
 
 # target to build an object file
 meshcutting-gui_automoc.cpp.o:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o
 .PHONY : meshcutting-gui_automoc.cpp.o
 
 meshcutting-gui_automoc.i: meshcutting-gui_automoc.cpp.i
@@ -209,7 +209,7 @@ meshcutting-gui_automoc.i: meshcutting-gui_automoc.cpp.i
 
 # target to preprocess a source file
 meshcutting-gui_automoc.cpp.i:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.i
 .PHONY : meshcutting-gui_automoc.cpp.i
 
 meshcutting-gui_automoc.s: meshcutting-gui_automoc.cpp.s
@@ -218,7 +218,7 @@ meshcutting-gui_automoc.s: meshcutting-gui_automoc.cpp.s
 
 # target to generate assembly for a file
 meshcutting-gui_automoc.cpp.s:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.s
 .PHONY : meshcutting-gui_automoc.cpp.s
 
 # Help Target
@@ -251,6 +251,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/sar/SarKerson/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

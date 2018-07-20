@@ -1,4 +1,4 @@
-# Install script for directory: /home/sar/SarKerson/qt_test/meshCutting/core/gui
+# Install script for directory: /home/sar/SarKerson/meshCutting/core/gui
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

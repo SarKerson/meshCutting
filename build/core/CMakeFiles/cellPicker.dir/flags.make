@@ -6,5 +6,5 @@ CXX_FLAGS =   -fPIC   -DTETLIBRARY -std=c++11 -g
 
 CXX_DEFINES = -DcellPicker_EXPORTS -DvtkDomainsChemistry_AUTOINIT="1(vtkDomainsChemistryOpenGL2)" -DvtkIOExport_AUTOINIT="1(vtkIOExportOpenGL2)" -DvtkRenderingContext2D_AUTOINIT="1(vtkRenderingContextOpenGL2)" -DvtkRenderingCore_AUTOINIT="3(vtkInteractionStyle,vtkRenderingFreeType,vtkRenderingOpenGL2)" -DvtkRenderingOpenGL2_AUTOINIT="1(vtkRenderingGL2PSOpenGL2)" -DvtkRenderingVolume_AUTOINIT="1(vtkRenderingVolumeOpenGL2)"
 
-CXX_INCLUDES = -I/usr/local/include/vtk-8.1 -I/home/sar/SarKerson/qt_test/meshCutting/core/./strutil/include -I/home/sar/SarKerson/qt_test/meshCutting/core/./cellPicker/include -I/home/sar/SarKerson/qt_test/meshCutting/core/./tetgen/include 
+CXX_INCLUDES = -I/usr/local/include/vtk-8.1 -I/home/sar/SarKerson/meshCutting/core/./strutil/include -I/home/sar/SarKerson/meshCutting/core/./cellPicker/include -I/home/sar/SarKerson/meshCutting/core/./tetgen/include 
 

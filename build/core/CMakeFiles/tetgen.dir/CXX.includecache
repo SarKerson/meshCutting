@@ -20,7 +20,7 @@ time.h
 stdint.h
 -
 
-/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/include/tetgen.h
+/home/sar/SarKerson/meshCutting/core/tetgen/include/tetgen.h
 stdio.h
 -
 stdlib.h
@@ -34,7 +34,7 @@ time.h
 stdint.h
 -
 
-/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/src/predicates.cxx
+/home/sar/SarKerson/meshCutting/core/tetgen/src/predicates.cxx
 stdio.h
 -
 stdlib.h
@@ -46,11 +46,11 @@ float.h
 fpu_control.h
 -
 ../include/tetgen.h
-/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/include/tetgen.h
+/home/sar/SarKerson/meshCutting/core/tetgen/include/tetgen.h
 CGAL/Exact_predicates_inexact_constructions_kernel.h
 -
 
-/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/src/tetgen.cxx
+/home/sar/SarKerson/meshCutting/core/tetgen/src/tetgen.cxx
 tetgen.h
-/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/src/tetgen.h
+/home/sar/SarKerson/meshCutting/core/tetgen/src/tetgen.h
 

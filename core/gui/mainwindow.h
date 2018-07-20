@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QAction>
+#include <QComboBox>
 #include "ui_mainwindow.h"
 
 class vtkOrientedGlyphContourRepresentation;
@@ -21,11 +22,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow() {}
 public:
-  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;
-  vtkSmartPointer<vtkOrientedGlyphContourRepresentation> acContour;
-  vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowLeft;
-  vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowMid;
-  vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowRight;
+
+  vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor;   // 获取interactor, 见.cpp中，this->renderWindowInteractor = renderWindowLeft->GetInteractor();，获取左render窗口的交互器
+  vtkSmartPointer<vtkOrientedGlyphContourRepresentation> acContour;    // 用于轮廓交互（绘制点并形成多边形），初始化为NULL，在openFile()成功的时候赋值
+  vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowLeft;      // 左边的render窗口
+  vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowMid;       // 右上角render窗口
+  vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindowRight;     // 右下角render窗口
 public:
   void reRenderAll();
 
@@ -57,6 +59,15 @@ public slots:
   void afterProc();
   void calculation();
 
+  void key_m();
+  void key_a();
+  void key_v();
+
+  void key_plus();
+  void key_s();
+
+  void slotSize(QString str);
+
 
 private:
 
@@ -84,6 +95,13 @@ private:
   QAction * after_act;
   QAction * cal_act;
 
+  QAction * key_m_act;  // choose points on the ear
+  QAction * key_a_act;  // choose points on the clipper
+  QAction * key_v_act;  // action
+
+  QAction * key_s_act;
+  QAction * key_plus_act;
+  QComboBox * pSizeBox;
 //  QAction * scale_up_act;
 //  QAction * scale_down_act;
 

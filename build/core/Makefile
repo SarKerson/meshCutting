@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sar/SarKerson/qt_test/meshCutting
+CMAKE_SOURCE_DIR = /home/sar/SarKerson/meshCutting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sar/SarKerson/qt_test/meshCutting/build
+CMAKE_BINARY_DIR = /home/sar/SarKerson/meshCutting/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles /home/sar/SarKerson/qt_test/meshCutting/build/core/CMakeFiles/progress.marks
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	cd /home/sar/SarKerson/meshCutting/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles /home/sar/SarKerson/meshCutting/build/core/CMakeFiles/progress.marks
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/clean
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/preinstall
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/preinstall
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/sar/SarKerson/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 core/CMakeFiles/strutil.dir/rule:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/strutil.dir/rule
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/strutil.dir/rule
 .PHONY : core/CMakeFiles/strutil.dir/rule
 
 # Convenience name for target.
@@ -122,12 +122,12 @@ strutil: core/CMakeFiles/strutil.dir/rule
 
 # fast build rule for target.
 strutil/fast:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/build
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/build
 .PHONY : strutil/fast
 
 # Convenience name for target.
 core/CMakeFiles/cellPicker.dir/rule:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/cellPicker.dir/rule
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/cellPicker.dir/rule
 .PHONY : core/CMakeFiles/cellPicker.dir/rule
 
 # Convenience name for target.
@@ -137,12 +137,12 @@ cellPicker: core/CMakeFiles/cellPicker.dir/rule
 
 # fast build rule for target.
 cellPicker/fast:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/build
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/build
 .PHONY : cellPicker/fast
 
 # Convenience name for target.
 core/CMakeFiles/tetgen.dir/rule:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/tetgen.dir/rule
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/tetgen.dir/rule
 .PHONY : core/CMakeFiles/tetgen.dir/rule
 
 # Convenience name for target.
@@ -152,7 +152,7 @@ tetgen: core/CMakeFiles/tetgen.dir/rule
 
 # fast build rule for target.
 tetgen/fast:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/build
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/build
 .PHONY : tetgen/fast
 
 cellPicker/src/cellPicker.o: cellPicker/src/cellPicker.cpp.o
@@ -161,7 +161,7 @@ cellPicker/src/cellPicker.o: cellPicker/src/cellPicker.cpp.o
 
 # target to build an object file
 cellPicker/src/cellPicker.cpp.o:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/cellPicker/src/cellPicker.cpp.o
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/cellPicker/src/cellPicker.cpp.o
 .PHONY : cellPicker/src/cellPicker.cpp.o
 
 cellPicker/src/cellPicker.i: cellPicker/src/cellPicker.cpp.i
@@ -170,7 +170,7 @@ cellPicker/src/cellPicker.i: cellPicker/src/cellPicker.cpp.i
 
 # target to preprocess a source file
 cellPicker/src/cellPicker.cpp.i:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/cellPicker/src/cellPicker.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/cellPicker/src/cellPicker.cpp.i
 .PHONY : cellPicker/src/cellPicker.cpp.i
 
 cellPicker/src/cellPicker.s: cellPicker/src/cellPicker.cpp.s
@@ -179,7 +179,7 @@ cellPicker/src/cellPicker.s: cellPicker/src/cellPicker.cpp.s
 
 # target to generate assembly for a file
 cellPicker/src/cellPicker.cpp.s:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/cellPicker/src/cellPicker.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/cellPicker/src/cellPicker.cpp.s
 .PHONY : cellPicker/src/cellPicker.cpp.s
 
 strutil/src/strutil.o: strutil/src/strutil.cpp.o
@@ -188,7 +188,7 @@ strutil/src/strutil.o: strutil/src/strutil.cpp.o
 
 # target to build an object file
 strutil/src/strutil.cpp.o:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/strutil/src/strutil.cpp.o
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/strutil/src/strutil.cpp.o
 .PHONY : strutil/src/strutil.cpp.o
 
 strutil/src/strutil.i: strutil/src/strutil.cpp.i
@@ -197,7 +197,7 @@ strutil/src/strutil.i: strutil/src/strutil.cpp.i
 
 # target to preprocess a source file
 strutil/src/strutil.cpp.i:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/strutil/src/strutil.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/strutil/src/strutil.cpp.i
 .PHONY : strutil/src/strutil.cpp.i
 
 strutil/src/strutil.s: strutil/src/strutil.cpp.s
@@ -206,7 +206,7 @@ strutil/src/strutil.s: strutil/src/strutil.cpp.s
 
 # target to generate assembly for a file
 strutil/src/strutil.cpp.s:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/strutil/src/strutil.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/strutil/src/strutil.cpp.s
 .PHONY : strutil/src/strutil.cpp.s
 
 tetgen/src/predicates.o: tetgen/src/predicates.cxx.o
@@ -215,7 +215,7 @@ tetgen/src/predicates.o: tetgen/src/predicates.cxx.o
 
 # target to build an object file
 tetgen/src/predicates.cxx.o:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.o
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.o
 .PHONY : tetgen/src/predicates.cxx.o
 
 tetgen/src/predicates.i: tetgen/src/predicates.cxx.i
@@ -224,7 +224,7 @@ tetgen/src/predicates.i: tetgen/src/predicates.cxx.i
 
 # target to preprocess a source file
 tetgen/src/predicates.cxx.i:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.i
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.i
 .PHONY : tetgen/src/predicates.cxx.i
 
 tetgen/src/predicates.s: tetgen/src/predicates.cxx.s
@@ -233,7 +233,7 @@ tetgen/src/predicates.s: tetgen/src/predicates.cxx.s
 
 # target to generate assembly for a file
 tetgen/src/predicates.cxx.s:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.s
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.s
 .PHONY : tetgen/src/predicates.cxx.s
 
 tetgen/src/tetgen.o: tetgen/src/tetgen.cxx.o
@@ -242,7 +242,7 @@ tetgen/src/tetgen.o: tetgen/src/tetgen.cxx.o
 
 # target to build an object file
 tetgen/src/tetgen.cxx.o:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.o
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.o
 .PHONY : tetgen/src/tetgen.cxx.o
 
 tetgen/src/tetgen.i: tetgen/src/tetgen.cxx.i
@@ -251,7 +251,7 @@ tetgen/src/tetgen.i: tetgen/src/tetgen.cxx.i
 
 # target to preprocess a source file
 tetgen/src/tetgen.cxx.i:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.i
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.i
 .PHONY : tetgen/src/tetgen.cxx.i
 
 tetgen/src/tetgen.s: tetgen/src/tetgen.cxx.s
@@ -260,7 +260,7 @@ tetgen/src/tetgen.s: tetgen/src/tetgen.cxx.s
 
 # target to generate assembly for a file
 tetgen/src/tetgen.cxx.s:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.s
+	cd /home/sar/SarKerson/meshCutting/build && $(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.s
 .PHONY : tetgen/src/tetgen.cxx.s
 
 # Help Target
@@ -297,6 +297,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/sar/SarKerson/meshCutting/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

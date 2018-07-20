@@ -1,4 +1,4 @@
-# Install script for directory: /home/sar/SarKerson/qt_test/meshCutting
+# Install script for directory: /home/sar/SarKerson/meshCutting
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,8 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/sar/SarKerson/qt_test/meshCutting/build/console/cmake_install.cmake")
-  include("/home/sar/SarKerson/qt_test/meshCutting/build/core/cmake_install.cmake")
+  include("/home/sar/SarKerson/meshCutting/build/core/cmake_install.cmake")
 
 endif()
 
@@ -47,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/sar/SarKerson/qt_test/meshCutting/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/sar/SarKerson/meshCutting/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sar/SarKerson/qt_test/meshCutting/core/strutil/include/strutil.h
+/home/sar/SarKerson/meshCutting/core/strutil/include/strutil.h
 string
 -
 vector
@@ -18,7 +18,7 @@ iomanip
 algorithm
 -
 
-/home/sar/SarKerson/qt_test/meshCutting/core/strutil/src/strutil.cpp
+/home/sar/SarKerson/meshCutting/core/strutil/src/strutil.cpp
 ../include/strutil.h
-/home/sar/SarKerson/qt_test/meshCutting/core/strutil/include/strutil.h
+/home/sar/SarKerson/meshCutting/core/strutil/include/strutil.h
 

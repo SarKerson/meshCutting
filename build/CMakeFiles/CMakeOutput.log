@@ -1,4 +1,4 @@
-The system is: Linux - 4.13.0-37-generic - x86_64
+The system is: Linux - 4.13.0-45-generic - x86_64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /usr/bin/cc 
 Build flags: 
@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/3.5.1/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/home/sar/SarKerson/meshCutting/build/CMakeFiles/3.5.1/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /usr/bin/c++ 
@@ -23,75 +23,75 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is GNU, found in "/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "/home/sar/SarKerson/meshCutting/build/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_41ab5/fast"
-/usr/bin/make -f CMakeFiles/cmTC_41ab5.dir/build.make CMakeFiles/cmTC_41ab5.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_41ab5.dir/testCCompiler.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_41ab5.dir/testCCompiler.c.o   -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_41ab5
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41ab5.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_41ab5.dir/testCCompiler.c.o  -o cmTC_41ab5 -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_79613/fast"
+/usr/bin/make -f CMakeFiles/cmTC_79613.dir/build.make CMakeFiles/cmTC_79613.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_79613.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_79613.dir/testCCompiler.c.o   -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_79613
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_79613.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_79613.dir/testCCompiler.c.o  -o cmTC_79613 -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_39bc4/fast"
-/usr/bin/make -f CMakeFiles/cmTC_39bc4.dir/build.make CMakeFiles/cmTC_39bc4.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_39bc4
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_39bc4.dir/link.txt --verbose=1
-/usr/bin/cc      -v CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o  -o cmTC_39bc4 -rdynamic  
+Run Build Command:"/usr/bin/make" "cmTC_39536/fast"
+/usr/bin/make -f CMakeFiles/cmTC_39536.dir/build.make CMakeFiles/cmTC_39536.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_39536
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_39536.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o  -o cmTC_39536 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
 Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) 
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_39bc4' '-rdynamic' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccnWyuTX.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_39bc4 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_39536' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc7hJEA8.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_39536 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_39bc4/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_39bc4.dir/build.make CMakeFiles/cmTC_39bc4.dir/build]
-  ignore line: [make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_39bc4]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_39bc4.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o  -o cmTC_39bc4 -rdynamic  ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_39536/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_39536.dir/build.make CMakeFiles/cmTC_39536.dir/build]
+  ignore line: [make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_39536]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_39536.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o  -o cmTC_39536 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
   ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) ]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_39bc4' '-rdynamic' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccnWyuTX.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_39bc4 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_39536' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cc7hJEA8.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_39536 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccnWyuTX.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cc7hJEA8.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -109,7 +109,7 @@ Parsed C implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_39bc4] ==> ignore
+    arg [cmTC_39536] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
@@ -121,7 +121,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_39bc4.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_39536.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -153,17 +153,17 @@ Parsed C implicit link information from above output:
 
 
 Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_4d47f/fast"
-/usr/bin/make -f CMakeFiles/cmTC_4d47f.dir/build.make CMakeFiles/cmTC_4d47f.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4d47f.dir/feature_tests.c.o
-/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_4d47f.dir/feature_tests.c.o   -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_4d47f
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d47f.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_4d47f.dir/feature_tests.c.o  -o cmTC_4d47f -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_fa7ba/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fa7ba.dir/build.make CMakeFiles/cmTC_fa7ba.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_fa7ba.dir/feature_tests.c.o
+/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_fa7ba.dir/feature_tests.c.o   -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_fa7ba
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fa7ba.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_fa7ba.dir/feature_tests.c.o  -o cmTC_fa7ba -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -173,17 +173,17 @@ make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeF
 
 
 Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_48c2a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_48c2a.dir/build.make CMakeFiles/cmTC_48c2a.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_48c2a.dir/feature_tests.c.o
-/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_48c2a.dir/feature_tests.c.o   -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_48c2a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_48c2a.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_48c2a.dir/feature_tests.c.o  -o cmTC_48c2a -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_1873b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1873b.dir/build.make CMakeFiles/cmTC_1873b.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1873b.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_1873b.dir/feature_tests.c.o   -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_1873b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1873b.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_1873b.dir/feature_tests.c.o  -o cmTC_1873b -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -193,17 +193,17 @@ make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeF
 
 
 Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_c2ea0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_c2ea0.dir/build.make CMakeFiles/cmTC_c2ea0.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_c2ea0.dir/feature_tests.c.o
-/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_c2ea0.dir/feature_tests.c.o   -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_c2ea0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2ea0.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_c2ea0.dir/feature_tests.c.o  -o cmTC_c2ea0 -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_84779/fast"
+/usr/bin/make -f CMakeFiles/cmTC_84779.dir/build.make CMakeFiles/cmTC_84779.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_84779.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_84779.dir/feature_tests.c.o   -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_84779
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_84779.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_84779.dir/feature_tests.c.o  -o cmTC_84779 -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -211,72 +211,72 @@ make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeF
     Feature record: C_FEATURE:0c_static_assert
     Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_bb317/fast"
-/usr/bin/make -f CMakeFiles/cmTC_bb317.dir/build.make CMakeFiles/cmTC_bb317.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_bb317.dir/testCXXCompiler.cxx.o
-/usr/bin/c++      -o CMakeFiles/cmTC_bb317.dir/testCXXCompiler.cxx.o -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_bb317
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bb317.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_bb317.dir/testCXXCompiler.cxx.o  -o cmTC_bb317 -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_15749/fast"
+/usr/bin/make -f CMakeFiles/cmTC_15749.dir/build.make CMakeFiles/cmTC_15749.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_15749.dir/testCXXCompiler.cxx.o
+/usr/bin/c++      -o CMakeFiles/cmTC_15749.dir/testCXXCompiler.cxx.o -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_15749
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_15749.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_15749.dir/testCXXCompiler.cxx.o  -o cmTC_15749 -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6cf1b/fast"
-/usr/bin/make -f CMakeFiles/cmTC_6cf1b.dir/build.make CMakeFiles/cmTC_6cf1b.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++      -o CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_6cf1b
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6cf1b.dir/link.txt --verbose=1
-/usr/bin/c++       -v CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_6cf1b -rdynamic  
+Run Build Command:"/usr/bin/make" "cmTC_937ef/fast"
+/usr/bin/make -f CMakeFiles/cmTC_937ef.dir/build.make CMakeFiles/cmTC_937ef.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++      -o CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_937ef
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_937ef.dir/link.txt --verbose=1
+/usr/bin/c++       -v CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_937ef -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
 Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
 Thread model: posix
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) 
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6cf1b' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccU0gZWt.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_6cf1b /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_937ef' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccMvKFbx.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_937ef /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_6cf1b/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_6cf1b.dir/build.make CMakeFiles/cmTC_6cf1b.dir/build]
-  ignore line: [make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++      -o CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_6cf1b]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6cf1b.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_6cf1b -rdynamic  ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_937ef/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_937ef.dir/build.make CMakeFiles/cmTC_937ef.dir/build]
+  ignore line: [make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++      -o CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_937ef]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_937ef.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_937ef -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
   ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.9' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.10' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.9) ]
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6cf1b' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccU0gZWt.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_6cf1b /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_937ef' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccMvKFbx.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_937ef /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccU0gZWt.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccMvKFbx.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -294,7 +294,7 @@ Parsed CXX implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_6cf1b] ==> ignore
+    arg [cmTC_937ef] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
@@ -306,7 +306,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_6cf1b.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_937ef.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -336,17 +336,17 @@ Parsed CXX implicit link information from above output:
 
 
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_380b8/fast"
-/usr/bin/make -f CMakeFiles/cmTC_380b8.dir/build.make CMakeFiles/cmTC_380b8.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_380b8.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++14 -o CMakeFiles/cmTC_380b8.dir/feature_tests.cxx.o -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_380b8
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_380b8.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_380b8.dir/feature_tests.cxx.o  -o cmTC_380b8 -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_7cd44/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7cd44.dir/build.make CMakeFiles/cmTC_7cd44.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7cd44.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++14 -o CMakeFiles/cmTC_7cd44.dir/feature_tests.cxx.o -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_7cd44
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7cd44.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_7cd44.dir/feature_tests.cxx.o  -o cmTC_7cd44 -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -409,17 +409,17 @@ make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeF
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_b065d/fast"
-/usr/bin/make -f CMakeFiles/cmTC_b065d.dir/build.make CMakeFiles/cmTC_b065d.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_b065d.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++11 -o CMakeFiles/cmTC_b065d.dir/feature_tests.cxx.o -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_b065d
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b065d.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_b065d.dir/feature_tests.cxx.o  -o cmTC_b065d -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_eb049/fast"
+/usr/bin/make -f CMakeFiles/cmTC_eb049.dir/build.make CMakeFiles/cmTC_eb049.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_eb049.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++11 -o CMakeFiles/cmTC_eb049.dir/feature_tests.cxx.o -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_eb049
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eb049.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_eb049.dir/feature_tests.cxx.o  -o cmTC_eb049 -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -482,17 +482,17 @@ make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeF
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp
+Change Dir: /home/sar/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_67aef/fast"
-/usr/bin/make -f CMakeFiles/cmTC_67aef.dir/build.make CMakeFiles/cmTC_67aef.dir/build
-make[1]: Entering directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_67aef.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++98 -o CMakeFiles/cmTC_67aef.dir/feature_tests.cxx.o -c /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_67aef
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_67aef.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_67aef.dir/feature_tests.cxx.o  -o cmTC_67aef -rdynamic 
-make[1]: Leaving directory '/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_1cb44/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1cb44.dir/build.make CMakeFiles/cmTC_1cb44.dir/build
+make[1]: Entering directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1cb44.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++98 -o CMakeFiles/cmTC_1cb44.dir/feature_tests.cxx.o -c /home/sar/SarKerson/meshCutting/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_1cb44
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1cb44.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_1cb44.dir/feature_tests.cxx.o  -o cmTC_1cb44 -rdynamic 
+make[1]: Leaving directory '/opt/codes/SarKerson/meshCutting/build/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers

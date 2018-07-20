@@ -11,6 +11,6 @@ message( STATUS "    libraries: ${VTK_LIBS}" )
 message( STATUS "    include path: ${VTK_INCLUDE_DIRS}" )
 
 # add subdirecories
-add_subdirectory(console)
-add_subdirectory(core)
+# add_subdirectory(console) # 编译终端版本，即非QT-GUI
+add_subdirectory(core)	    # 编译QT-GUI版本 
 # add_subdirectory(gui)

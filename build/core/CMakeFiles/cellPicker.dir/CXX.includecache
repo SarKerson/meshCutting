@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/cellPicker.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/cellPicker.h
 vtkCellPicker.h
 -
 vtkIdTypeArray.h
@@ -26,19 +26,19 @@ vtkRendererCollection.h
 vtkDataSetSurfaceFilter.h
 -
 vtkInteractorStyleTrackballCamera.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/vtkInteractorStyleTrackballCamera.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/vtkInteractorStyleTrackballCamera.h
 vtkDataSetMapper.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/vtkDataSetMapper.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/vtkDataSetMapper.h
 vtkUnstructuredGrid.h
 -
 vtkRenderWindow.h
 -
 vtkRenderWindowInteractor.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/vtkRenderWindowInteractor.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/vtkRenderWindowInteractor.h
 
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/src/cellPicker.cpp
+/home/sar/SarKerson/meshCutting/core/cellPicker/src/cellPicker.cpp
 ../include/cellPicker.h
-/home/sar/SarKerson/qt_test/meshCutting/core/cellPicker/include/cellPicker.h
+/home/sar/SarKerson/meshCutting/core/cellPicker/include/cellPicker.h
 
 /usr/local/include/vtk-8.1/vtkABI.h
 

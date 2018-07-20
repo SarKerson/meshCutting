@@ -70,5 +70,6 @@
 #include <string.h>
 #include <vtkDataSetSurfaceFilter.h>
 #include <vtkOBJReader.h>
+#include <vtkInteractorStyleJoystickActor.h>
 
 #endif // ALL_HEADERS_H

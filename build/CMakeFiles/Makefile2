@@ -54,65 +54,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sar/SarKerson/qt_test/meshCutting
+CMAKE_SOURCE_DIR = /home/sar/SarKerson/meshCutting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sar/SarKerson/qt_test/meshCutting/build
-
-#=============================================================================
-# Directory level rules for directory console
-
-# Convenience name for "all" pass in the directory.
-console/all: console/CMakeFiles/console.dir/all
-
-.PHONY : console/all
-
-# Convenience name for "clean" pass in the directory.
-console/clean: console/CMakeFiles/console.dir/clean
-
-.PHONY : console/clean
-
-# Convenience name for "preinstall" pass in the directory.
-console/preinstall:
-
-.PHONY : console/preinstall
-
-#=============================================================================
-# Target rules for target console/CMakeFiles/console.dir
-
-# All Build rule for target.
-console/CMakeFiles/console.dir/all:
-	$(MAKE) -f console/CMakeFiles/console.dir/build.make console/CMakeFiles/console.dir/depend
-	$(MAKE) -f console/CMakeFiles/console.dir/build.make console/CMakeFiles/console.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=3,4 "Built target console"
-.PHONY : console/CMakeFiles/console.dir/all
-
-# Include target in all.
-all: console/CMakeFiles/console.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-console/CMakeFiles/console.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 console/CMakeFiles/console.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
-.PHONY : console/CMakeFiles/console.dir/rule
-
-# Convenience name for target.
-console: console/CMakeFiles/console.dir/rule
-
-.PHONY : console
-
-# clean rule for target.
-console/CMakeFiles/console.dir/clean:
-	$(MAKE) -f console/CMakeFiles/console.dir/build.make console/CMakeFiles/console.dir/clean
-.PHONY : console/CMakeFiles/console.dir/clean
-
-# clean rule for target.
-clean: console/CMakeFiles/console.dir/clean
-
-.PHONY : clean
+CMAKE_BINARY_DIR = /home/sar/SarKerson/meshCutting/build
 
 #=============================================================================
 # Directory level rules for directory core
@@ -145,7 +90,7 @@ core/preinstall: core/gui/preinstall
 core/CMakeFiles/strutil.dir/all:
 	$(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/depend
 	$(MAKE) -f core/CMakeFiles/strutil.dir/build.make core/CMakeFiles/strutil.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=11,12 "Built target strutil"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=9,10 "Built target strutil"
 .PHONY : core/CMakeFiles/strutil.dir/all
 
 # Include target in all.
@@ -155,9 +100,9 @@ all: core/CMakeFiles/strutil.dir/all
 
 # Build rule for subdir invocation for target.
 core/CMakeFiles/strutil.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/strutil.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : core/CMakeFiles/strutil.dir/rule
 
 # Convenience name for target.
@@ -182,7 +127,7 @@ clean: core/CMakeFiles/strutil.dir/clean
 core/CMakeFiles/cellPicker.dir/all:
 	$(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/depend
 	$(MAKE) -f core/CMakeFiles/cellPicker.dir/build.make core/CMakeFiles/cellPicker.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=1,2 "Built target cellPicker"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=1,2 "Built target cellPicker"
 .PHONY : core/CMakeFiles/cellPicker.dir/all
 
 # Include target in all.
@@ -192,9 +137,9 @@ all: core/CMakeFiles/cellPicker.dir/all
 
 # Build rule for subdir invocation for target.
 core/CMakeFiles/cellPicker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/cellPicker.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : core/CMakeFiles/cellPicker.dir/rule
 
 # Convenience name for target.
@@ -219,7 +164,7 @@ clean: core/CMakeFiles/cellPicker.dir/clean
 core/CMakeFiles/tetgen.dir/all:
 	$(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/depend
 	$(MAKE) -f core/CMakeFiles/tetgen.dir/build.make core/CMakeFiles/tetgen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=13,14,15 "Built target tetgen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=11,12,13 "Built target tetgen"
 .PHONY : core/CMakeFiles/tetgen.dir/all
 
 # Include target in all.
@@ -229,9 +174,9 @@ all: core/CMakeFiles/tetgen.dir/all
 
 # Build rule for subdir invocation for target.
 core/CMakeFiles/tetgen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 core/CMakeFiles/tetgen.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : core/CMakeFiles/tetgen.dir/rule
 
 # Convenience name for target.
@@ -277,7 +222,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/all: core/CMakeFiles/tetgen.dir/all
 core/gui/CMakeFiles/meshcutting-gui.dir/all: core/gui/CMakeFiles/meshcutting-gui_automoc.dir/all
 	$(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/depend
 	$(MAKE) -f core/gui/CMakeFiles/meshcutting-gui.dir/build.make core/gui/CMakeFiles/meshcutting-gui.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=5,6,7,8,9 "Built target meshcutting-gui"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=3,4,5,6,7 "Built target meshcutting-gui"
 .PHONY : core/gui/CMakeFiles/meshcutting-gui.dir/all
 
 # Include target in all.
@@ -287,9 +232,9 @@ all: core/gui/CMakeFiles/meshcutting-gui.dir/all
 
 # Build rule for subdir invocation for target.
 core/gui/CMakeFiles/meshcutting-gui.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 11
 	$(MAKE) -f CMakeFiles/Makefile2 core/gui/CMakeFiles/meshcutting-gui.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : core/gui/CMakeFiles/meshcutting-gui.dir/rule
 
 # Convenience name for target.
@@ -314,14 +259,14 @@ clean: core/gui/CMakeFiles/meshcutting-gui.dir/clean
 core/gui/CMakeFiles/meshcutting-gui_automoc.dir/all:
 	$(MAKE) -f core/gui/CMakeFiles/meshcutting-gui_automoc.dir/build.make core/gui/CMakeFiles/meshcutting-gui_automoc.dir/depend
 	$(MAKE) -f core/gui/CMakeFiles/meshcutting-gui_automoc.dir/build.make core/gui/CMakeFiles/meshcutting-gui_automoc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=10 "Built target meshcutting-gui_automoc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=8 "Built target meshcutting-gui_automoc"
 .PHONY : core/gui/CMakeFiles/meshcutting-gui_automoc.dir/all
 
 # Build rule for subdir invocation for target.
 core/gui/CMakeFiles/meshcutting-gui_automoc.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 core/gui/CMakeFiles/meshcutting-gui_automoc.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sar/SarKerson/meshCutting/build/CMakeFiles 0
 .PHONY : core/gui/CMakeFiles/meshcutting-gui_automoc.dir/rule
 
 # Convenience name for target.

@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sar/SarKerson/qt_test/meshCutting
+CMAKE_SOURCE_DIR = /home/sar/SarKerson/meshCutting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sar/SarKerson/qt_test/meshCutting/build
+CMAKE_BINARY_DIR = /home/sar/SarKerson/meshCutting/build
 
 # Include any dependencies generated for this target.
 include core/gui/CMakeFiles/meshcutting-gui.dir/depend.make
@@ -58,21 +58,21 @@ include core/gui/CMakeFiles/meshcutting-gui.dir/progress.make
 include core/gui/CMakeFiles/meshcutting-gui.dir/flags.make
 
 core/gui/ui_mainwindow.h: ../core/gui/mainwindow.ui
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ui_mainwindow.h"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /home/sar/anaconda2/bin/uic -o /home/sar/SarKerson/qt_test/meshCutting/build/core/gui/ui_mainwindow.h /home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.ui
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating ui_mainwindow.h"
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /home/sar/anaconda2/bin/uic -o /home/sar/SarKerson/meshCutting/build/core/gui/ui_mainwindow.h /home/sar/SarKerson/meshCutting/core/gui/mainwindow.ui
 
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: core/gui/CMakeFiles/meshcutting-gui.dir/flags.make
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: ../core/gui/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/meshcutting-gui.dir/main.cpp.o -c /home/sar/SarKerson/qt_test/meshCutting/core/gui/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o"
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/meshcutting-gui.dir/main.cpp.o -c /home/sar/SarKerson/meshCutting/core/gui/main.cpp
 
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/meshcutting-gui.dir/main.cpp.i"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sar/SarKerson/qt_test/meshCutting/core/gui/main.cpp > CMakeFiles/meshcutting-gui.dir/main.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sar/SarKerson/meshCutting/core/gui/main.cpp > CMakeFiles/meshcutting-gui.dir/main.cpp.i
 
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/meshcutting-gui.dir/main.cpp.s"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sar/SarKerson/qt_test/meshCutting/core/gui/main.cpp -o CMakeFiles/meshcutting-gui.dir/main.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sar/SarKerson/meshCutting/core/gui/main.cpp -o CMakeFiles/meshcutting-gui.dir/main.cpp.s
 
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o.requires:
 
@@ -87,16 +87,16 @@ core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o.provides.build: core/gui/CMak
 
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: core/gui/CMakeFiles/meshcutting-gui.dir/flags.make
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: ../core/gui/mainwindow.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o -c /home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o"
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o -c /home/sar/SarKerson/meshCutting/core/gui/mainwindow.cpp
 
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.i"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.cpp > CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sar/SarKerson/meshCutting/core/gui/mainwindow.cpp > CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.i
 
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.s"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sar/SarKerson/qt_test/meshCutting/core/gui/mainwindow.cpp -o CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sar/SarKerson/meshCutting/core/gui/mainwindow.cpp -o CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.s
 
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o.requires:
 
@@ -111,16 +111,16 @@ core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o.provides.build: core/gu
 
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: core/gui/CMakeFiles/meshcutting-gui.dir/flags.make
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: core/gui/meshcutting-gui_automoc.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o -c /home/sar/SarKerson/qt_test/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o"
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o -c /home/sar/SarKerson/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp
 
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.i"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sar/SarKerson/qt_test/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp > CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.i
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sar/SarKerson/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp > CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.i
 
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.s"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sar/SarKerson/qt_test/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp -o CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.s
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sar/SarKerson/meshCutting/build/core/gui/meshcutting-gui_automoc.cpp -o CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.s
 
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o.requires:
 
@@ -278,8 +278,8 @@ meshcutting__gui_EXTERNAL_OBJECTS =
 ../bin/meshcutting-gui: /usr/local/lib/libvtksys-8.1.so.1
 ../bin/meshcutting-gui: /usr/local/lib/libvtkoggtheora-8.1.so.1
 ../bin/meshcutting-gui: core/gui/CMakeFiles/meshcutting-gui.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sar/SarKerson/qt_test/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ../../../bin/meshcutting-gui"
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/meshcutting-gui.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sar/SarKerson/meshCutting/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ../../../bin/meshcutting-gui"
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/meshcutting-gui.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 core/gui/CMakeFiles/meshcutting-gui.dir/build: ../bin/meshcutting-gui
@@ -293,10 +293,10 @@ core/gui/CMakeFiles/meshcutting-gui.dir/requires: core/gui/CMakeFiles/meshcuttin
 .PHONY : core/gui/CMakeFiles/meshcutting-gui.dir/requires
 
 core/gui/CMakeFiles/meshcutting-gui.dir/clean:
-	cd /home/sar/SarKerson/qt_test/meshCutting/build/core/gui && $(CMAKE_COMMAND) -P CMakeFiles/meshcutting-gui.dir/cmake_clean.cmake
+	cd /home/sar/SarKerson/meshCutting/build/core/gui && $(CMAKE_COMMAND) -P CMakeFiles/meshcutting-gui.dir/cmake_clean.cmake
 .PHONY : core/gui/CMakeFiles/meshcutting-gui.dir/clean
 
 core/gui/CMakeFiles/meshcutting-gui.dir/depend: core/gui/ui_mainwindow.h
-	cd /home/sar/SarKerson/qt_test/meshCutting/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sar/SarKerson/qt_test/meshCutting /home/sar/SarKerson/qt_test/meshCutting/core/gui /home/sar/SarKerson/qt_test/meshCutting/build /home/sar/SarKerson/qt_test/meshCutting/build/core/gui /home/sar/SarKerson/qt_test/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sar/SarKerson/meshCutting/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sar/SarKerson/meshCutting /home/sar/SarKerson/meshCutting/core/gui /home/sar/SarKerson/meshCutting/build /home/sar/SarKerson/meshCutting/build/core/gui /home/sar/SarKerson/meshCutting/build/core/gui/CMakeFiles/meshcutting-gui.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : core/gui/CMakeFiles/meshcutting-gui.dir/depend
 

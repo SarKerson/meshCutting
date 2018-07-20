@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/src/predicates.cxx" "/home/sar/SarKerson/qt_test/meshCutting/build/core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.o"
-  "/home/sar/SarKerson/qt_test/meshCutting/core/tetgen/src/tetgen.cxx" "/home/sar/SarKerson/qt_test/meshCutting/build/core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.o"
+  "/home/sar/SarKerson/meshCutting/core/tetgen/src/predicates.cxx" "/home/sar/SarKerson/meshCutting/build/core/CMakeFiles/tetgen.dir/tetgen/src/predicates.cxx.o"
+  "/home/sar/SarKerson/meshCutting/core/tetgen/src/tetgen.cxx" "/home/sar/SarKerson/meshCutting/build/core/CMakeFiles/tetgen.dir/tetgen/src/tetgen.cxx.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

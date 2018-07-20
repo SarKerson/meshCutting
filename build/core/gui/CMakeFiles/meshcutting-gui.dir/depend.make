@@ -124,6 +124,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QAction
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QApplication
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QButtonGroup
+core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QComboBox
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QGridLayout
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QHeaderView
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QMainWindow
@@ -140,6 +141,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qapplication.h
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qboxlayout.h
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qbuttongroup.h
+core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qcombobox.h
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qdesktopwidget.h
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qframe.h
 core/gui/CMakeFiles/meshcutting-gui.dir/main.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qgridlayout.h
@@ -330,6 +332,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/in
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QAction
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QApplication
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QButtonGroup
+core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QComboBox
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QFileDialog
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QGridLayout
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QHeaderView
@@ -349,6 +352,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/in
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qapplication.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qboxlayout.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qbuttongroup.h
+core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qcombobox.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qdesktopwidget.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qdialog.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qfiledialog.h
@@ -471,6 +475,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk-8.1/vtkInteractionWidgetsModule.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk-8.1/vtkInteractorObserver.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk-8.1/vtkInteractorStyle.h
+core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk-8.1/vtkInteractorStyleJoystickActor.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk-8.1/vtkInteractorStyleTrackballActor.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk-8.1/vtkInteractorStyleTrackballCamera.h
 core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: /usr/local/include/vtk-8.1/vtkLinearContourLineInterpolator.h
@@ -579,7 +584,6 @@ core/gui/CMakeFiles/meshcutting-gui.dir/mainwindow.cpp.o: core/gui/ui_mainwindow
 
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: core/gui/meshcutting-gui_automoc.cpp
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: core/gui/moc_mainwindow.cpp
-core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: ../core/gui/mainwindow.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtCore/QObject
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtCore/QVariant
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtCore/qabstractitemmodel.h
@@ -701,6 +705,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QAction
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QApplication
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QButtonGroup
+core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QComboBox
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QGridLayout
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QHeaderView
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/QMainWindow
@@ -717,6 +722,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qapplication.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qboxlayout.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qbuttongroup.h
+core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qcombobox.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qdesktopwidget.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qframe.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qgridlayout.h
@@ -734,6 +740,7 @@ core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qtabbar.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qtabwidget.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /home/sar/anaconda2/include/qt/QtWidgets/qwidget.h
+core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /opt/codes/SarKerson/meshCutting/core/gui/mainwindow.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /usr/local/include/vtk-8.1/QVTKInteractor.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /usr/local/include/vtk-8.1/QVTKOpenGLWidget.h
 core/gui/CMakeFiles/meshcutting-gui.dir/meshcutting-gui_automoc.cpp.o: /usr/local/include/vtk-8.1/QVTKWin32Header.h
