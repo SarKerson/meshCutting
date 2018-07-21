@@ -5,8 +5,8 @@
 #include "../cellPicker/include/cellPicker.h"
 using namespace std;
 
-static bool FIRSTOPEN = true;
-static bool CUTTING_MODE = 0;
+static bool FIRSTOPEN = true;                 // 是否为第一次打开文件，因为可以重复点击“打开文件”，若非第一次打开，则没必要再绑定鼠标键盘事件
+static bool CUTTING_MODE = false;             // 当且仅当执行openFile并且成功时，CUTTING_MODE为true，进入切割模式
 
 
 vtkSmartPointer<vtkPolygonalSurfacePointPlacer> g_points_placer = NULL;  // 用于在物体上进行着点交互，g_points_placer->AddProp(sourceActor);，即在actor上添加着点交互
@@ -59,7 +59,7 @@ double g_distance = 0;    // 计算切割对象的对角线长度，与g_bounds�
  */
 double g_normal[3];       // 该平面的法向量
 double g_origin[3];       // 该平面上某一点的坐标
-double scale = 1;         // 平面的缩放倍数，保证平面足够大
+double g_scal = 1;         // 平面的缩放倍数，保证平面足够大
 
 
 //data used to add the prosthesis
@@ -146,6 +146,16 @@ void parallelplane(vtkRenderer* ren, vtkSmartPointer<vtkActor> & front_plane_act
   plane->SetNormal(normal);       // 设置平面的法向量
   plane->Update();
 
+  if (g_front_plane != NULL) {
+      g_front_plane->SetNormal(normal);
+      g_origin[0] = a_view[0];
+      g_origin[1] = a_view[1];
+      g_origin[2] = a_view[2];
+      g_normal[0] = normal[0];
+      g_normal[1] = normal[1];
+      g_normal[2] = normal[2];
+  }
+
   vtkSmartPointer<vtkDataSetMapper> planeMapper =
     vtkSmartPointer<vtkDataSetMapper>::New();
   planeMapper->SetInputData(plane->GetOutput());
@@ -155,7 +165,7 @@ void parallelplane(vtkRenderer* ren, vtkSmartPointer<vtkActor> & front_plane_act
   front_plane_actor->GetProperty()->SetInterpolationToFlat();
   front_plane_actor->GetProperty()->SetOpacity(0.1);
   front_plane_actor->GetProperty()->SetLighting(1);
-  front_plane_actor->SetScale(scale * 5);     // 获得足够大的平面
+  front_plane_actor->SetScale(g_scal * 5);     // 获得足够大的平面
   g_points_placer->AddProp(front_plane_actor);
 }
 
@@ -183,13 +193,22 @@ void parallelplane(vtkRenderer* ren1)
   vtkMath::Cross(e2, e1, normal);
   vtkMath::Normalize(normal);
 
+  if (g_front_plane != NULL) {
+    g_front_plane->SetNormal(normal);
+    g_origin[0] = a_view[0];
+    g_origin[1] = a_view[1];
+    g_origin[2] = a_view[2];
+    g_normal[0] = normal[0];
+    g_normal[1] = normal[1];
+    g_normal[2] = normal[2];
+  }
 }
 
 
 /**
- * @brief helpful function for calculating appropriate scale
+ * @brief helpful function for calculating appropriate scal
  * @param clipActor
- * @return scale
+ * @return scal
  */
 double calscale(vtkActor* clipActor)
 {
@@ -202,16 +221,16 @@ double calscale(vtkActor* clipActor)
   double xscale = fabs(g_bounds[1] - g_bounds[0]);
   double yscale = fabs(g_bounds[3] - g_bounds[2]);
   double zscale = fabs(g_bounds[5] - g_bounds[4]);
-  double scale = xscale*yscale;
-  if (xscale*zscale > scale)
+  double scal = xscale*yscale;
+  if (xscale*zscale > scal)
   {
-    scale = xscale*zscale;
+    scal = xscale*zscale;
   }
-  else if (yscale*zscale > scale)
+  else if (yscale*zscale > scal)
   {
-    scale = yscale*zscale;
+    scal = yscale*zscale;
   }
-  return scale;
+  return scal;
 }
 double maximumLength(double* _g_bounds)
 {
@@ -222,6 +241,10 @@ double maximumLength(double* _g_bounds)
   std::vector<double>::iterator max = std::max_element(vg_bounds.begin(), vg_bounds.end());
   return *max;
 }
+/**
+ * 计算向量的模长
+ * @return 模长
+ */
 double mod()
 {
   double p[3] = { g_bounds[1] - g_bounds[0],
@@ -233,7 +256,7 @@ double mod()
 
 
 /**
- * @brief add points, call this every time set a point on the actor
+ * @brief 添加点，每次用户点击都会调用该函数
  * @param p
  * @param render
  * [need re-render]
@@ -245,19 +268,17 @@ void addPoint(double* p, vtkRenderer* render)
 {
 
     if (CUTTING_MODE) {
-        if(g_front_plane == NULL) {
+        if(g_front_plane == NULL) {                                   // 生成平面
           g_front_plane = vtkSmartPointer<vtkPlane>::New();
           parallelplane(render);
         }
 
         double * point = new double[3];
-        g_front_plane->ProjectPoint(p, g_origin, g_normal, point);
-//        cout << point[0] << ", " << point[1] << ", " << point[2] << endl;
-        double distance = sqrt(vtkMath::Distance2BetweenPoints(p, point));
+        g_front_plane->ProjectPoint(p, g_origin, g_normal, point);    // 在p点沿向量 g_normal 投影到平面 g_front_plane 上
+        double distance = sqrt(vtkMath::Distance2BetweenPoints(p, point));  // 计算p到投影点的距离
         if (distance > g_distance) {
           g_distance = distance;
         }
-        // cv::Vec3f vpoint(point[0], point[1], point[2]);
         g_vclick_points.push_back(point);
 
         render->Render();
@@ -267,23 +288,25 @@ void addPoint(double* p, vtkRenderer* render)
 
 
 /**
- * @brief generate ClipperData
+ * 由用户绘制的点生成柱体，用于切割
+ * 这里维护两个全局变量: g_clipper_trifilter, g_clipper_actor
  */
 void generateClipperData()
 {
   if (CUTTING_MODE) {
       vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+      // 遍历用户绘制的点集，用于生成柱体
       for(int i = 0; i < g_vclick_points.size(); ++i) {
         points->InsertNextPoint(g_vclick_points[i][0], g_vclick_points[i][1], g_vclick_points[i][2]);
       }
-      vtkSmartPointer<vtkPolygon> polygon4 = vtkSmartPointer<vtkPolygon>::New();
-      polygon4->GetPointIds()->SetNumberOfIds(g_vclick_points.size());
+      vtkSmartPointer<vtkPolygon> polygon = vtkSmartPointer<vtkPolygon>::New();
+      polygon->GetPointIds()->SetNumberOfIds(g_vclick_points.size());
       for(int i = 0; i < g_vclick_points.size(); ++i) {
-        polygon4->GetPointIds()->SetId(i, i);
+        polygon->GetPointIds()->SetId(i, i);
       }
 
       vtkSmartPointer<vtkCellArray> cells = vtkSmartPointer<vtkCellArray>::New();
-      cells->InsertNextCell(polygon4);
+      cells->InsertNextCell(polygon);
       vtkSmartPointer<vtkPolyData> triangle = vtkSmartPointer<vtkPolyData>::New();
       triangle->SetPoints(points);
       triangle->SetPolys(cells);
@@ -296,8 +319,6 @@ void generateClipperData()
 
       g_clipper_trifilter = vtkSmartPointer<vtkTriangleFilter>::New();
       g_clipper_trifilter->SetInputConnection(extrude->GetOutputPort());
-
-
 
        vtkSmartPointer<vtkDataSetMapper> mapper =
         vtkSmartPointer<vtkDataSetMapper>::New();
@@ -312,13 +333,17 @@ void generateClipperData()
 
 }
 
-void generateClippedByBool()
+/**
+ * 由生成的柱体，与被切割物体进行布尔运算，生成结果数据
+ */
+void generateClippedData()
 {
 
     if (CUTTING_MODE) {
 
         /*
-          fist, get the intersection, show on the mid renderer
+          与运算及亦或运算，得到两个结果 g_mid_data, g_mid_actor及 g_right_data, g_right_actor
+          注意：为了方便，mid指的是右上，right指的是右下
         */
         vtkSmartPointer<vtkBooleanOperationPolyDataFilter> booleanOperation =
           vtkSmartPointer<vtkBooleanOperationPolyDataFilter>::New();
@@ -340,7 +365,6 @@ void generateClippedByBool()
         booleanOperation1->SetOperationToDifference();
         booleanOperation1->SetInputData( 0, g_vopen_data[g_vopen_data.size() - 1] );
         booleanOperation1->SetInputData(1, g_clipper_trifilter->GetOutput());
-
         vtkSmartPointer<vtkPolyDataMapper> booleanOperationMapper1 =
         vtkSmartPointer<vtkPolyDataMapper>::New();
         booleanOperationMapper1->SetInputConnection( booleanOperation1->GetOutputPort() );
@@ -368,19 +392,17 @@ void clearAllNodes(vtkOrientedGlyphContourRepresentation* contour, vtkRenderer* 
 
 
 /**
- * @brief get PolyData
+ * @brief 返回输入的stl文件的polydata数据
  * @param filename
- * @return
+ * @return polydata数据
  */
 vtkSmartPointer<vtkPolyData> getPolyData(QString filename)
 {
   // vtkSmartPointer<vtkOBJReader> reader = vtkSmartPointer<vtkOBJReader>::New();
-
   vtkSmartPointer<vtkSTLReader> reader = vtkSmartPointer<vtkSTLReader>::New();
   reader->SetFileName(filename.toLatin1().data());
   reader->Update();
   return reader->GetOutput();
-
 }
 
 
@@ -517,54 +539,46 @@ public:
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    this->setupUi(this);
-    this->m_Connections = vtkSmartPointer<vtkEventQtSlotConnect>::New();
-    //add a qaction
+    this->setupUi(this); // 加载UI
+    this->m_Connections = vtkSmartPointer<vtkEventQtSlotConnect>::New();   // 用于绑定鼠标键盘事件
+
+    // 添加菜单
     this->openfile_act = new QAction(tr("&Open"), this);
     this->openfile_act->setShortcut(QKeySequence::Open);
     this->savefile_act = new QAction(tr("&Save"), this);
     this->savefile_act->setShortcut(QKeySequence::Save);
     this->setStatusTip(tr("Open a file."));
-    //add the qaction to a menu
     this->fileMenu = menuBar()->addMenu(tr("&File"));
     this->fileMenu->addAction(openfile_act);
     this->fileMenu->addAction(savefile_act);
 
     this->acContour = NULL;
 
-    back_act = NULL;
-    select_first_act = NULL;
-    select_second_act = NULL;
-    clear_all_act = NULL;
-    delete_last_act = NULL;
-
-    union_act = NULL;
-
-    QToolBar * toolBar = addToolBar(tr("&toolBar"));
-    this->back_act = new QAction(tr("&Back"), this);
-    this->delete_last_act = new QAction(tr("&DeleteLastPoint"), this);
-    this->clear_all_act = new QAction(tr("&clearAllPoints"), this);
-    this->select_first_act = new QAction(tr("&select1"), this);
-    this->select_second_act = new QAction(tr("&select2"), this);
-    this->cut_act = new QAction(tr("&cut"), this);
-
+    // 添加按钮，每个按钮对应一个名字，该名字将显示在工具栏上
+    QToolBar * toolBar = addToolBar(tr("toolBar"));
+    this->back_act = new QAction(tr("back"), this);
+    this->delete_last_act = new QAction(tr("DeleteLastPoint"), this);
+    this->clear_all_act = new QAction(tr("clearAllPoints"), this);
+    this->select_first_act = new QAction(tr("select1"), this);
+    this->select_second_act = new QAction(tr("select2"), this);
+    this->cut_act = new QAction(tr("cut"), this);
     this->import_act = new QAction(tr("import"), this);
     this->union_act = new QAction(tr("union"), this);
     this->add_paper_act = new QAction(tr("addPaper"), this);
     this->reset_act = new QAction(tr("reset"), this);
     this->after_process_act = new QAction(tr("afterProcess"), this);
     this->cal_act = new QAction(tr("calculation"), this);
-
     this->chose_points_ear_act = new QAction(tr("chosePointsOnEar"), this); 
     this->chose_points_data_act = new QAction(tr("chosePointsOnData"), this); 
     this->ear_data_trans_act = new QAction(tr("doTrans"), this); 
     this->ear_rotation_act = new QAction(tr("doRot"), this);
-    this->pSizeBox = new QComboBox();   // 添加下拉菜单
 
+    // 添加下拉菜单
+    this->pSizeBox = new QComboBox();   
     for (int i = -15; i < 16; ++i)
       this->pSizeBox->addItem( QString::number( i ) );
 
-
+    // 添加按钮到工具栏
     toolBar->addAction(reset_act);
     toolBar->addAction(add_paper_act);
     toolBar->addAction(back_act);
@@ -573,7 +587,6 @@ MainWindow::MainWindow(QWidget *parent) :
     toolBar->addAction(cut_act);
     toolBar->addAction(select_first_act);
     toolBar->addAction(select_second_act);
-    
     toolBar->addAction(import_act);
     toolBar->addAction(union_act);
     toolBar->addAction(chose_points_ear_act);
@@ -581,14 +594,12 @@ MainWindow::MainWindow(QWidget *parent) :
     toolBar->addAction(ear_data_trans_act);
     toolBar->addAction(ear_rotation_act);
     toolBar->addWidget(this->pSizeBox);
-
     toolBar->addAction(after_process_act);
     toolBar->addAction(cal_act);
     
 
-
     /*
-    init three render windows
+    初始化renderwindows
     */
     renderWindowLeft = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
     renderWindowMid = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
@@ -606,8 +617,6 @@ MainWindow::MainWindow(QWidget *parent) :
     rightrender = vtkSmartPointer<vtkRenderer>::New();
     rightrender->SetBackground(0.4, 0.4, 0.4);
 
-
-
     renderWindowLeft->AddRenderer(leftrenderer);
     renderWindowMid->AddRenderer(midrender);
     renderWindowRight->AddRenderer(rightrender);
@@ -616,18 +625,16 @@ MainWindow::MainWindow(QWidget *parent) :
     renderWindowMid->Render();
     renderWindowRight->Render();
 
-
+    // 添加按钮到函数的映射
     connect(this->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
     connect(this->openfile_act, SIGNAL(triggered()), this, SLOT(openFile()));
     connect(this->savefile_act, SIGNAL(triggered()), this, SLOT(saveFile()));
-
     connect(this->back_act, SIGNAL(triggered()), this, SLOT(back()));
     connect(this->select_first_act, SIGNAL(triggered()), this, SLOT(selectFirst()));
     connect(this->select_second_act, SIGNAL(triggered()), this, SLOT(selectSecond()));
     connect(this->clear_all_act, SIGNAL(triggered()), this, SLOT(clearAllPoints()));
     connect(this->delete_last_act, SIGNAL(triggered()), this, SLOT(deleteLastPoint()));
     connect(this->cut_act, SIGNAL(triggered()), this, SLOT(cut()));
-
     connect(this->union_act, SIGNAL(triggered()), this, SLOT(makeUnion()));
     connect(this->import_act, SIGNAL(triggered()), this, SLOT(importFile()));
     connect(this->add_paper_act, SIGNAL(triggered()), this, SLOT(addPaper()));
@@ -642,6 +649,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+
+/**
+ * 下拉菜单事件改变全局变量angle的值，作为doRot()的输入
+ * @param str 角度
+ */
 void MainWindow::slotSize(QString str)
 {
    angle = str.toFloat();
@@ -649,15 +661,19 @@ void MainWindow::slotSize(QString str)
    angle = 3.1415926 / (180 / angle);
 }
 
+
+/**
+ * 重置界面，清空所有数据，CUTTING_MODE置true，进入切割状态
+ */
 void MainWindow::reSet()
 {
-    if (acContour != NULL) {
+    if (acContour != NULL) {  // 清空所有绘制节点（显示在屏幕上的点）
         acContour->ClearAllNodes();
     }
-    g_vclick_points.clear();
+    g_vclick_points.clear();  // 清空所有绘制节点的源数据
 
     if (g_vopen_data_actors.size() > 0) {
-        leftrenderer->RemoveActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        leftrenderer->RemoveActor(g_vopen_data_actors.back());
         rmRecentActorPoints();
     }
     if (g_front_plane_actor) {
@@ -691,6 +707,18 @@ void MainWindow::reSet()
     reRenderAll();
 }
 
+
+/**
+ * 预期将union后的数据，即 g_vopen_data.back()，用tetgen进行四面体化，
+ * 并后台调用abaqus进行受力分析，并将结果push_back到 g_vopen_data 并刷新显示
+ *
+ * 目前该函数的功能是：
+ * 打开某一个文件，调用tetgen进行四面体化并显示。
+ * 
+ * ！不用union运算结果，即 g_vopen_data.back() 的原因是，由于ear的数据（自己用3dsmask绘制的）是非delaunay三角面片，
+ * vtk的布尔运算后也无法为delaunay。而tetgen无法对非规则三维数据作很好的四面体化。但是，可以保证的是，对于规则的三围数据
+ * 是可以进行正常的四面体化。
+ */
 void MainWindow::afterProc()
 {
   // reSet();
@@ -764,6 +792,7 @@ void MainWindow::afterProc()
   //     return;
   // }
 }
+
 
 
 void MainWindow::calculation()
@@ -1107,7 +1136,11 @@ void MainWindow::keyboard()
 
 
 /**
- * 打开文件
+ * 打开文件，执行以下步骤操作：
+ * 1. 导入 g_click_source_data
+ * 2. 维护 g_bounds及 g_scal 用于恰当大小的平面及柱体的生成
+ * 3. 将导入的 g_click_source_data 对应的actor及data添加到 g_vopen_data_actors 及 g_vopen_data 中，以便back()操作回滚历史数据
+ * 4. 添加着点回调
  */
 void MainWindow::openFile()
 {
@@ -1117,23 +1150,20 @@ void MainWindow::openFile()
         g_click_source_data = NULL;
         g_mid_actor = NULL;
         g_right_actor = NULL;
-        cout << "init..." << endl;
         remat->Zero();
 
         //pop, clear all datas to inition
-        QString filename = QFileDialog :: getOpenFileName(this, NULL, NULL, "*.*");
+        QString filename = QFileDialog :: getOpenFileName(this, NULL, NULL, "*.stl");
 
         if (filename != "") {
             g_click_source_data = getPolyData(filename);
-
 
             assert(g_click_source_data != NULL);
 
             g_bounds = g_click_source_data->GetBounds();
 
             //create mapper and actor for each polyData
-            vtkSmartPointer<vtkDataSetMapper> sourceMapper =
-            vtkSmartPointer<vtkDataSetMapper>::New();
+            vtkSmartPointer<vtkDataSetMapper> sourceMapper = vtkSmartPointer<vtkDataSetMapper>::New();
             sourceMapper->SetInputData(g_click_source_data);
 
             vtkSmartPointer<vtkActor> sourceActor =
@@ -1142,9 +1172,9 @@ void MainWindow::openFile()
             sourceActor->GetProperty()->SetColor(1.0000,0.3882,0.2784);
             sourceActor->GetProperty()->SetInterpolationToFlat();
 
-            scale = calscale(sourceActor);
+            g_scal = calscale(sourceActor);
 
-            // vector
+
             g_vopen_data_actors.push_back(sourceActor);
             g_vopen_data.push_back(g_click_source_data);
 
@@ -1158,20 +1188,17 @@ void MainWindow::openFile()
             this->renderWindowInteractor = renderWindowLeft->GetInteractor();
             this->renderWindowInteractor->ReInitialize();
 
-            //----------------start call back----------------------------------
-
+            //----------------添加着点回调操作----------------------------------
             this->acContour = vtkOrientedGlyphContourRepresentation::New();
-            vtkContourWidget *contourWidget = vtkContourWidget::New();
+            vtkSmartPointer<vtkContourWidget> contourWidget = vtkSmartPointer<vtkContourWidget>::New();
             contourWidget->SetInteractor(renderWindowInteractor);
             contourWidget->SetRepresentation(acContour);
             g_points_placer = vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
             g_points_placer->AddProp(sourceActor);
             acContour->SetPointPlacer(g_points_placer);
-            vtkLinearContourLineInterpolator * interpolator =
-            vtkLinearContourLineInterpolator::New();
+            vtkSmartPointer<vtkLinearContourLineInterpolator> interpolator = vtkSmartPointer<vtkLinearContourLineInterpolator>::New();
             acContour->SetLineInterpolator(interpolator);
             contourWidget->SetEnabled(1);
-
             //----------------end call back-------------------------------------------------
         }
         else {
@@ -1204,16 +1231,14 @@ void MainWindow::openFile()
  */
 void MainWindow::saveFile()
 {
-    //set a filename to save
-     QString fileName = QFileDialog::getSaveFileName(this, tr("Open STL files") , "/home/", tr("STL files (*.stl)"));
-
-     //write
-     vtkSmartPointer<vtkSTLWriter> stlWriter =
-       vtkSmartPointer<vtkSTLWriter>::New();
-     stlWriter->SetFileName(fileName.toLatin1().data());
-     stlWriter->SetInputData(g_vopen_data[g_vopen_data.size() - 1]);
-     stlWriter->Write();
-     cout << "done\n";
+  if (!g_vopen_data.empty()) {
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Open STL files") , "/home/", tr("STL files (*.stl)"));
+    vtkSmartPointer<vtkSTLWriter> stlWriter = vtkSmartPointer<vtkSTLWriter>::New();
+    stlWriter->SetFileName(fileName.toLatin1().data());
+    stlWriter->SetInputData(g_vopen_data.back());
+    stlWriter->Write();
+    cout << "saved successfully..." << endl;
+  }
 }
 
 /**
@@ -1224,19 +1249,22 @@ void MainWindow::slotExit()
   qApp->exit();
 }
 
+
+/**
+ * 删除 g_vclick_points 中最后的点，并删除其显示
+ */
 void MainWindow::deleteLastPoint()
 {
-
     if (acContour)
     {
-        cout << "Delete the last node" << endl;
-        acContour->DeleteLastNode();
-        g_vclick_points.pop_back();
-        if (g_vclick_points.size() == 0) {
+        acContour->DeleteLastNode();  // 删除最后一个点的显示
+        g_vclick_points.pop_back();   // 从数据中删除该点
+        if (g_vclick_points.size() == 0) {    // 若点集为空，则将平面去除，因为可能需要重新计算
           cout << "no points left" << endl;
           clearAllNodes(acContour, leftrenderer);
           assert(g_front_plane == NULL);
         }
+        cout << "Delete the last node" << endl;
     }
     reRenderAll();
 }
@@ -1263,20 +1291,20 @@ void MainWindow::back()
         if (g_front_plane_actor)
             removeThePlane();
         if (g_vopen_data_actors.size() != 1) {
-          rmRecentActorPoints();  //------remove placer on actor--
+          rmRecentActorPoints();
 
-          vtkActor* actor = g_vopen_data_actors[g_vopen_data_actors.size() - 1];
+          vtkSmartPointer<vtkActor> actor = g_vopen_data_actors.back();
           leftrenderer->RemoveActor(actor);
           g_vopen_data_actors.pop_back();
           actor->Delete();
 
-          vtkPolyData* polyData = g_vopen_data[g_vopen_data.size() - 1];
+          vtkSmartPointer<vtkPolyData> polyData = g_vopen_data.back();
           g_vopen_data.pop_back();
           polyData->Delete();
 
-          leftrenderer->AddActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+          leftrenderer->AddActor(g_vopen_data_actors.back());
           clearAllNodes(acContour, leftrenderer);
-          g_points_placer->AddProp(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+          g_points_placer->AddProp(g_vopen_data_actors.back());
         }
         assert(g_front_plane == NULL);
     }
@@ -1340,7 +1368,7 @@ void MainWindow::cut()
     if ( CUTTING_MODE == 1 && g_vclick_points.size() > 2)
     {
         generateClipperData();
-        generateClippedByBool();  //draw in mid and right
+        generateClippedData();  //draw in mid and right
 
         midrender->SetActiveCamera(leftrenderer->GetActiveCamera());
         rightrender->SetActiveCamera(leftrenderer->GetActiveCamera());
