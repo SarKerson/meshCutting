@@ -1,25 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "all_headers.h"
-
 #include "../tetgen/include/tetgen.h"
 #include "../cellPicker/include/cellPicker.h"
-
 using namespace std;
 
 static bool FIRSTOPEN = true;
-
-vtkSmartPointer<vtkPolygonalSurfacePointPlacer> pointPlacer;
-
-vtkSmartPointer<vtkPolyData> clipSource = NULL;
-
-std::vector<double*> g_vclick_points1;
+static bool CUTTING_MODE = 0;
 
 
-vtkSmartPointer<vtkPlane> frontPlane = NULL;
+vtkSmartPointer<vtkPolygonalSurfacePointPlacer> g_points_placer = NULL;  // 用于在物体上进行着点交互，g_points_placer->AddProp(sourceActor);，即在actor上添加着点交互
+vtkSmartPointer<vtkPolyData> g_click_source_data = NULL;  // 被切割物体的源数据
+std::vector<double*> g_vclick_points;           // 存储用户绘制的点，每个点为(x, y, z)
+vtkSmartPointer<vtkPlane> g_front_plane = NULL; // add_paper方法添加的平行于屏幕的平面，用于投影用户绘制的点，以形成柱体
+vtkSmartPointer<vtkActor> g_front_plane_actor = NULL;   // g_front_plane对应的actor
 
 /**
- * renderer in diff view port
+ * 不同窗口的renderer
  */
 vtkSmartPointer<vtkRenderer> leftrenderer = NULL;
 vtkSmartPointer<vtkRenderer> midrender = NULL;
@@ -27,56 +24,50 @@ vtkSmartPointer<vtkRenderer> rightrender = NULL;
 
 
 /**
- * actors in diff renderer
+ * 维护不同renderer的所有actor，以vector形式保存历史actor数据，以便实现back()操作的回滚
  */
-std::vector<vtkSmartPointer<vtkActor> > vleftActors;
-std::vector<vtkSmartPointer<vtkActor> > vimportActor;
-vtkSmartPointer<vtkActor> midActor = NULL;
-vtkSmartPointer<vtkActor> rightActor = NULL;
-vtkSmartPointer<vtkActor> clipperActor = NULL;   //----------------------------------------
-
-/**
- * polydata of the actors
- */
-std::vector<vtkSmartPointer<vtkPolyData> > vleftPolydatas;
-std::vector<vtkSmartPointer<vtkPolyData> > vimportPolydatas;
-vtkSmartPointer<vtkPolyData> mid_data = NULL;
-vtkSmartPointer<vtkPolyData> right_data = NULL;
-vtkSmartPointer<vtkTriangleFilter> trifilter = NULL;     //the output of trifilter is polydata of the clipper
+std::vector<vtkSmartPointer<vtkActor> > g_vopen_data_actors;
+std::vector<vtkSmartPointer<vtkActor> > g_vimport_data_actors;
 
 
 /**
-  *ear
-  */
-vtkSmartPointer<vtkPolyData> ear = NULL;
-
-
-/**
- * the plane souce for points placing
+ * 维护不同actor对应的所有polydata，以vector形式保存，以便实现actors回滚后的cut()等数据操作
  */
-vtkSmartPointer<vtkActor> thePlaneActor = NULL;
+std::vector<vtkSmartPointer<vtkPolyData> > g_vopen_data;
+std::vector<vtkSmartPointer<vtkPolyData> > g_vimport_data;
+
+
+vtkSmartPointer<vtkActor> g_mid_actor = NULL;      // 当前右上方对应的actor
+vtkSmartPointer<vtkActor> g_right_actor = NULL;    // 当前右下方对应的actor
+vtkSmartPointer<vtkActor> g_clipper_actor = NULL;  // 用户绘制的多边形对应的柱体，用于切割g_click_source_data
+
+
+vtkSmartPointer<vtkPolyData> g_mid_data = NULL;   // 当前右上方actor对应的polydata
+vtkSmartPointer<vtkPolyData> g_right_data = NULL; // 当前右下方actor对应的polydata
+vtkSmartPointer<vtkTriangleFilter> g_clipper_trifilter = NULL;  // clipper的output即为用户绘制的多边形对应的柱体的polydata, 调用如：g_clipper_trifilter->GetOutput()
+
 
 vtkSmartPointer<vtkMatrix4x4> remat = vtkSmartPointer<vtkMatrix4x4>::New();
 
-double *center;
-double *bounds;
-double g_normal[3];
-double g_origin[3];
-double g_distance = 0;
-/**
- * scale of the plane to ensure enough area
- */
-double scale = 1;
-bool CUTTING_MODE = 0;
 
+double *g_bounds;         // 用于动态计算柱体的长度，保证柱体能够完全包围需切割部分（若相切或柱体过小，则无法和源数据(切割对象)作交集运算）
+double g_distance = 0;    // 计算切割对象的对角线长度，与g_bounds配合
+
+
+/**
+ * 以下几个变量用于平行于屏幕的平面g_front_plane的构建。
+ */
+double g_normal[3];       // 该平面的法向量
+double g_origin[3];       // 该平面上某一点的坐标
+double scale = 1;         // 平面的缩放倍数，保证平面足够大
 
 
 //data used to add the prosthesis
-double left[4] = { 0.0,0.0,0.0,1.0 };
-double right[4] = { 0.0,0.0,0.0,1.0 };
-double leftn[4] = { 0.0,0.0,0.0,1.0 };
-double rightn[4] = { 0.0,0.0,0.0,1.0 };
-double enormal[3] = { 0,0,0 };
+double left[4] = { 0.0, 0.0, 0.0, 1.0 };
+double right[4] = { 0.0, 0.0, 0.0, 1.0 };
+double leftn[4] = { 0.0, 0.0, 0.0, 1.0 };
+double rightn[4] = { 0.0, 0.0, 0.0, 1.0 };
+double enormal[3] = { 0, 0, 0 };
 
 //the center of the model
 double pcenter[3] = { 0,0,0 };
@@ -90,90 +81,82 @@ double angle = -3.1415926/12;
 
 
 /**
- *@brief remove the visible plane
+ *@brief 将平面 g_front_plane 移除
  * [need re-render]
  */
 void removeThePlane()
 {
-    if (thePlaneActor) {
-        leftrenderer->RemoveActor(thePlaneActor);
-        pointPlacer->RemoveViewProp(thePlaneActor);
-        thePlaneActor = NULL;
+    if (g_front_plane_actor) {
+        leftrenderer->RemoveActor(g_front_plane_actor);
+        g_points_placer->RemoveViewProp(g_front_plane_actor);
+        g_front_plane_actor = NULL;
     }
 }
 
 
 /**
- * @brief removeRecentActor
- * remove the point placing method on the recent actor
+ * @brief  remove the points placing method on the recent actor
  * [need re-render]
  */
-void removeRecentActor()
+void rmRecentActorPoints()
 {
-    if (vleftActors.size() > 0) {
-        vtkSmartPointer<vtkActor> & actor = vleftActors[vleftActors.size() - 1];
-        pointPlacer->RemoveViewProp(actor);
+    if (g_vopen_data_actors.size() > 0) {
+        vtkSmartPointer<vtkActor> & actor = g_vopen_data_actors.back();  // 获取leftrender中最顶端的actor
+        g_points_placer->RemoveViewProp(actor);                          // 删除该actor的points placing操作（包括已经绘制的点）
     }
 }
 
 
 /**
  * @brief generate a visible plane parallel to the curent screen
- * @param ren1
- * @param thePlaneActor
+ * 原理为，获取屏幕向右及向上两个向量的世界坐标，叉乘得到法向量，任何一点作为平面上的点，即可构建一个平行于屏幕的平面
+ * @param ren 某窗口的renderer
  * [need re-render]
  */
-void parallelplane(vtkRenderer* ren1, vtkSmartPointer<vtkActor> & thePlaneActor)
+void parallelplane(vtkRenderer* ren, vtkSmartPointer<vtkActor> & front_plane_actor)
 {
-  if (thePlaneActor) {
+  if (front_plane_actor) {    // 若当前平面非空，则删除当前平面
      removeThePlane();
   }
-  thePlaneActor = vtkSmartPointer<vtkActor>::New();
+  front_plane_actor = vtkSmartPointer<vtkActor>::New();
 
   vtkSmartPointer<vtkPlaneSource> plane = vtkSmartPointer<vtkPlaneSource>::New();
+
   double a_view[3] = { 0.0,0.0,0.0 };
-  double b_view[3] = { 0.0,1.0,0.0 };
+  double b_view[3] = { 0.0,1.0,0.0 }; 
   double c_view[3] = { 1.0,0.0,0.0 };
-  ren1->ViewToWorld(a_view[0], a_view[1], a_view[2]);
-  ren1->ViewToWorld(b_view[0], b_view[1], b_view[2]);
-  ren1->ViewToWorld(c_view[0], c_view[1], c_view[2]);
+
+  // 以下将view坐标转换为世界坐标，view坐标可以理解为屏幕的坐标，右为x正向，上为y正向，里为z正向
+  ren->ViewToWorld(a_view[0], a_view[1], a_view[2]);  
+  ren->ViewToWorld(b_view[0], b_view[1], b_view[2]);
+  ren->ViewToWorld(c_view[0], c_view[1], c_view[2]);
+
+  // 获取方向向右及向上两个向量的世界坐标表示e1, e2
   double e1[3] = { c_view[0] - a_view[0],
     c_view[1] - a_view[1],
     c_view[2] - a_view[2] };
   double e2[3] = { b_view[0] - a_view[0],
     b_view[1] - a_view[1],
     b_view[2] - a_view[2] };
+
   double normal[3];
-  vtkMath::Cross(e2, e1, normal);
-  vtkMath::Normalize(normal);
+  vtkMath::Cross(e2, e1, normal); // 叉乘得到法向量
+  vtkMath::Normalize(normal);     // 法向量归一化
 
-  plane->SetNormal(normal);
+  plane->SetNormal(normal);       // 设置平面的法向量
   plane->Update();
-
-  if (frontPlane != NULL) {
-      //------------------------------------------------test-----------
-        frontPlane->SetNormal(normal);
-
-        g_origin[0] = a_view[0];
-        g_origin[1] = a_view[1];
-        g_origin[2] = a_view[2];
-        g_normal[0] = normal[0];
-        g_normal[1] = normal[1];
-        g_normal[2] = normal[2];
-      //--------------------------------------------------------------------
-  }
 
   vtkSmartPointer<vtkDataSetMapper> planeMapper =
     vtkSmartPointer<vtkDataSetMapper>::New();
   planeMapper->SetInputData(plane->GetOutput());
-  thePlaneActor = vtkSmartPointer<vtkActor>::New();
-  thePlaneActor->SetMapper(planeMapper);
-  thePlaneActor->GetProperty()->SetColor(1.0000, 1.0, 1.0);
-  thePlaneActor->GetProperty()->SetInterpolationToFlat();
-  thePlaneActor->GetProperty()->SetOpacity(0.1);
-  thePlaneActor->GetProperty()->SetLighting(1);
-  thePlaneActor->SetScale(scale * 5);
-  pointPlacer->AddProp(thePlaneActor);
+  front_plane_actor = vtkSmartPointer<vtkActor>::New();
+  front_plane_actor->SetMapper(planeMapper);
+  front_plane_actor->GetProperty()->SetColor(1.0000, 1.0, 1.0);
+  front_plane_actor->GetProperty()->SetInterpolationToFlat();
+  front_plane_actor->GetProperty()->SetOpacity(0.1);
+  front_plane_actor->GetProperty()->SetLighting(1);
+  front_plane_actor->SetScale(scale * 5);     // 获得足够大的平面
+  g_points_placer->AddProp(front_plane_actor);
 }
 
 
@@ -200,20 +183,6 @@ void parallelplane(vtkRenderer* ren1)
   vtkMath::Cross(e2, e1, normal);
   vtkMath::Normalize(normal);
 
-
-      //------------------------------------------------test-----------
-    if (frontPlane) {
-        frontPlane->SetNormal(normal);
-
-        g_origin[0] = a_view[0];
-        g_origin[1] = a_view[1];
-        g_origin[2] = a_view[2];
-        g_normal[0] = normal[0];
-        g_normal[1] = normal[1];
-        g_normal[2] = normal[2];
-    }
-      //--------------------------------------------------------------------
-
 }
 
 
@@ -224,15 +193,15 @@ void parallelplane(vtkRenderer* ren1)
  */
 double calscale(vtkActor* clipActor)
 {
-  double bounds[6];
+  double g_bounds[6];
   for (int cc = 0; cc < 6; cc++)
   {
-    bounds[cc] = clipActor->GetBounds()[cc];
-//    cout << bounds[cc] << endl;
+    g_bounds[cc] = clipActor->GetBounds()[cc];
+//    cout << g_bounds[cc] << endl;
   }
-  double xscale = fabs(bounds[1] - bounds[0]);
-  double yscale = fabs(bounds[3] - bounds[2]);
-  double zscale = fabs(bounds[5] - bounds[4]);
+  double xscale = fabs(g_bounds[1] - g_bounds[0]);
+  double yscale = fabs(g_bounds[3] - g_bounds[2]);
+  double zscale = fabs(g_bounds[5] - g_bounds[4]);
   double scale = xscale*yscale;
   if (xscale*zscale > scale)
   {
@@ -244,20 +213,20 @@ double calscale(vtkActor* clipActor)
   }
   return scale;
 }
-double maximumLength(double* _bounds)
+double maximumLength(double* _g_bounds)
 {
-  std::vector<double> vbounds;
-  vbounds.push_back(_bounds[1] - _bounds[0]);
-  vbounds.push_back(_bounds[3] - _bounds[2]);
-  vbounds.push_back(_bounds[5] - _bounds[4]);
-  std::vector<double>::iterator max = std::max_element(vbounds.begin(), vbounds.end());
+  std::vector<double> vg_bounds;
+  vg_bounds.push_back(_g_bounds[1] - _g_bounds[0]);
+  vg_bounds.push_back(_g_bounds[3] - _g_bounds[2]);
+  vg_bounds.push_back(_g_bounds[5] - _g_bounds[4]);
+  std::vector<double>::iterator max = std::max_element(vg_bounds.begin(), vg_bounds.end());
   return *max;
 }
 double mod()
 {
-  double p[3] = { bounds[1] - bounds[0],
-                  bounds[3] - bounds[2],
-                  bounds[5] - bounds[4] };
+  double p[3] = { g_bounds[1] - g_bounds[0],
+                  g_bounds[3] - g_bounds[2],
+                  g_bounds[5] - g_bounds[4] };
   return p[0] * p[0] + p[1] * p[1] + p[2] * p[2];
 }
 
@@ -268,7 +237,7 @@ double mod()
  * @param p
  * @param render
  * [need re-render]
- * [frontPlane : NULL :when no points
+ * [g_front_plane : NULL :when no points
  *          NOT-NULL: when add any point
  *          TURN-NULL: when cutting is done]
  */
@@ -276,24 +245,20 @@ void addPoint(double* p, vtkRenderer* render)
 {
 
     if (CUTTING_MODE) {
-        if(frontPlane == NULL) {
-//          cout << "generate a plane" << endl;
-          frontPlane = vtkSmartPointer<vtkPlane>::New();
-      /**
-       * add the plane actor here for points placing
-       */
+        if(g_front_plane == NULL) {
+          g_front_plane = vtkSmartPointer<vtkPlane>::New();
           parallelplane(render);
         }
 
         double * point = new double[3];
-        frontPlane->ProjectPoint(p, g_origin, g_normal, point);
+        g_front_plane->ProjectPoint(p, g_origin, g_normal, point);
 //        cout << point[0] << ", " << point[1] << ", " << point[2] << endl;
         double distance = sqrt(vtkMath::Distance2BetweenPoints(p, point));
         if (distance > g_distance) {
           g_distance = distance;
         }
         // cv::Vec3f vpoint(point[0], point[1], point[2]);
-        g_vclick_points1.push_back(point);
+        g_vclick_points.push_back(point);
 
         render->Render();
     }
@@ -308,12 +273,12 @@ void generateClipperData()
 {
   if (CUTTING_MODE) {
       vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-      for(int i = 0; i < g_vclick_points1.size(); ++i) {
-        points->InsertNextPoint(g_vclick_points1[i][0], g_vclick_points1[i][1], g_vclick_points1[i][2]);
+      for(int i = 0; i < g_vclick_points.size(); ++i) {
+        points->InsertNextPoint(g_vclick_points[i][0], g_vclick_points[i][1], g_vclick_points[i][2]);
       }
       vtkSmartPointer<vtkPolygon> polygon4 = vtkSmartPointer<vtkPolygon>::New();
-      polygon4->GetPointIds()->SetNumberOfIds(g_vclick_points1.size());
-      for(int i = 0; i < g_vclick_points1.size(); ++i) {
+      polygon4->GetPointIds()->SetNumberOfIds(g_vclick_points.size());
+      for(int i = 0; i < g_vclick_points.size(); ++i) {
         polygon4->GetPointIds()->SetId(i, i);
       }
 
@@ -327,22 +292,22 @@ void generateClipperData()
       extrude->SetInputData(triangle);
       extrude->SetExtrusionTypeToNormalExtrusion();
       extrude->SetVector(g_normal[0], g_normal[1], g_normal[2]);
-      extrude->SetScaleFactor(1.5 * maximumLength(bounds) + 2 * g_distance);//1.5 * maximumLength(bounds) +
+      extrude->SetScaleFactor(1.5 * maximumLength(g_bounds) + 2 * g_distance);//1.5 * maximumLength(g_bounds) +
 
-      trifilter = vtkSmartPointer<vtkTriangleFilter>::New();
-      trifilter->SetInputConnection(extrude->GetOutputPort());
+      g_clipper_trifilter = vtkSmartPointer<vtkTriangleFilter>::New();
+      g_clipper_trifilter->SetInputConnection(extrude->GetOutputPort());
 
 
 
        vtkSmartPointer<vtkDataSetMapper> mapper =
         vtkSmartPointer<vtkDataSetMapper>::New();
-      mapper->SetInputConnection(trifilter->GetOutputPort());
+      mapper->SetInputConnection(g_clipper_trifilter->GetOutputPort());
 
-      clipperActor = vtkSmartPointer<vtkActor>::New();
-      clipperActor->SetMapper(mapper);
-      clipperActor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
-      clipperActor->GetProperty()->SetOpacity(0.1);
-      leftrenderer->AddActor(clipperActor);
+      g_clipper_actor = vtkSmartPointer<vtkActor>::New();
+      g_clipper_actor->SetMapper(mapper);
+      g_clipper_actor->GetProperty()->SetColor(0.8900, 0.8100, 0.3400);
+      g_clipper_actor->GetProperty()->SetOpacity(0.1);
+      leftrenderer->AddActor(g_clipper_actor);
   }
 
 }
@@ -358,32 +323,32 @@ void generateClippedByBool()
         vtkSmartPointer<vtkBooleanOperationPolyDataFilter> booleanOperation =
           vtkSmartPointer<vtkBooleanOperationPolyDataFilter>::New();
         booleanOperation->SetOperationToIntersection();
-        booleanOperation->SetInputData( 1, vleftPolydatas[vleftPolydatas.size() - 1] );
-        booleanOperation->SetInputData(0, trifilter->GetOutput()); // set the input data
+        booleanOperation->SetInputData( 1, g_vopen_data[g_vopen_data.size() - 1] );
+        booleanOperation->SetInputData(0, g_clipper_trifilter->GetOutput()); // set the input data
         vtkSmartPointer<vtkPolyDataMapper> booleanOperationMapper =
         vtkSmartPointer<vtkPolyDataMapper>::New();
         booleanOperationMapper->SetInputConnection( booleanOperation->GetOutputPort() );
         booleanOperationMapper->ScalarVisibilityOff();
-        midActor = vtkSmartPointer<vtkActor>::New();
-        midActor->SetMapper( booleanOperationMapper );
-        midrender->AddActor(midActor);
-        mid_data = booleanOperation->GetOutput();
+        g_mid_actor = vtkSmartPointer<vtkActor>::New();
+        g_mid_actor->SetMapper( booleanOperationMapper );
+        midrender->AddActor(g_mid_actor);
+        g_mid_data = booleanOperation->GetOutput();
 
 
         vtkSmartPointer<vtkBooleanOperationPolyDataFilter> booleanOperation1 =
           vtkSmartPointer<vtkBooleanOperationPolyDataFilter>::New();
         booleanOperation1->SetOperationToDifference();
-        booleanOperation1->SetInputData( 0, vleftPolydatas[vleftPolydatas.size() - 1] );
-        booleanOperation1->SetInputData(1, trifilter->GetOutput());
+        booleanOperation1->SetInputData( 0, g_vopen_data[g_vopen_data.size() - 1] );
+        booleanOperation1->SetInputData(1, g_clipper_trifilter->GetOutput());
 
         vtkSmartPointer<vtkPolyDataMapper> booleanOperationMapper1 =
         vtkSmartPointer<vtkPolyDataMapper>::New();
         booleanOperationMapper1->SetInputConnection( booleanOperation1->GetOutputPort() );
         booleanOperationMapper1->ScalarVisibilityOff();
-        rightActor = vtkSmartPointer<vtkActor>::New();
-        rightActor->SetMapper( booleanOperationMapper1 );
-        rightrender->AddActor( rightActor );
-        right_data = booleanOperation1->GetOutput();
+        g_right_actor = vtkSmartPointer<vtkActor>::New();
+        g_right_actor->SetMapper( booleanOperationMapper1 );
+        rightrender->AddActor( g_right_actor );
+        g_right_data = booleanOperation1->GetOutput();
     }
 
 }
@@ -397,8 +362,8 @@ void clearAllNodes(vtkOrientedGlyphContourRepresentation* contour, vtkRenderer* 
 {
   cout << "Delete all node" << endl;
   contour->ClearAllNodes();
-  g_vclick_points1.clear();
-  frontPlane = NULL;
+  g_vclick_points.clear();
+  g_front_plane = NULL;
 }
 
 
@@ -567,58 +532,59 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->acContour = NULL;
 
-    key_0_act = NULL;
-    key_1_act = NULL;
-    key_2_act = NULL;
-    key_c_act = NULL;
-    key_k_act = NULL;
+    back_act = NULL;
+    select_first_act = NULL;
+    select_second_act = NULL;
+    clear_all_act = NULL;
+    delete_last_act = NULL;
 
-    key_u_act = NULL;
+    union_act = NULL;
 
     QToolBar * toolBar = addToolBar(tr("&toolBar"));
-    this->key_0_act = new QAction(tr("&Back"), this);
-    this->key_k_act = new QAction(tr("&DeleteLastPoint"), this);
-    this->key_c_act = new QAction(tr("&clearAllPoints"), this);
-    this->key_1_act = new QAction(tr("&select1"), this);
-    this->key_2_act = new QAction(tr("&select2"), this);
-    this->key_n_act = new QAction(tr("&cut"), this);
+    this->back_act = new QAction(tr("&Back"), this);
+    this->delete_last_act = new QAction(tr("&DeleteLastPoint"), this);
+    this->clear_all_act = new QAction(tr("&clearAllPoints"), this);
+    this->select_first_act = new QAction(tr("&select1"), this);
+    this->select_second_act = new QAction(tr("&select2"), this);
+    this->cut_act = new QAction(tr("&cut"), this);
 
     this->import_act = new QAction(tr("import"), this);
-    this->key_u_act = new QAction(tr("union"), this);
-    this->addpaper_act = new QAction(tr("addPaper"), this);
+    this->union_act = new QAction(tr("union"), this);
+    this->add_paper_act = new QAction(tr("addPaper"), this);
     this->reset_act = new QAction(tr("reset"), this);
-    this->after_act = new QAction(tr("afterProcess"), this);
+    this->after_process_act = new QAction(tr("afterProcess"), this);
     this->cal_act = new QAction(tr("calculation"), this);
 
-    this->key_m_act = new QAction(tr("chosePointsOnEar"), this); 
-    this->key_a_act = new QAction(tr("chosePointsOnData"), this); 
-    this->key_v_act = new QAction(tr("doTrans"), this); 
-    this->key_plus_act = new QAction(tr("angle"), this);
-    this->key_s_act = new QAction(tr("doRot"), this);
-    this->pSizeBox = new QComboBox();
+    this->chose_points_ear_act = new QAction(tr("chosePointsOnEar"), this); 
+    this->chose_points_data_act = new QAction(tr("chosePointsOnData"), this); 
+    this->ear_data_trans_act = new QAction(tr("doTrans"), this); 
+    this->ear_rotation_act = new QAction(tr("doRot"), this);
+    this->pSizeBox = new QComboBox();   // 添加下拉菜单
 
     for (int i = -15; i < 16; ++i)
       this->pSizeBox->addItem( QString::number( i ) );
 
 
-    toolBar->addAction(key_0_act);
-    toolBar->addAction(key_c_act);
-    toolBar->addAction(key_k_act);
-    toolBar->addAction(key_n_act);
-    toolBar->addAction(key_1_act);
-    toolBar->addAction(key_2_act);
-    toolBar->addAction(import_act);
-    toolBar->addAction(key_u_act);
-    toolBar->addAction(addpaper_act);
     toolBar->addAction(reset_act);
-    toolBar->addAction(after_act);
-    toolBar->addAction(cal_act);
-    toolBar->addAction(key_m_act);
-    toolBar->addAction(key_a_act);
-    toolBar->addAction(key_v_act);
-    toolBar->addAction(key_s_act);
-    toolBar->addAction(key_plus_act);
+    toolBar->addAction(add_paper_act);
+    toolBar->addAction(back_act);
+    toolBar->addAction(delete_last_act);
+    toolBar->addAction(clear_all_act);
+    toolBar->addAction(cut_act);
+    toolBar->addAction(select_first_act);
+    toolBar->addAction(select_second_act);
+    
+    toolBar->addAction(import_act);
+    toolBar->addAction(union_act);
+    toolBar->addAction(chose_points_ear_act);
+    toolBar->addAction(chose_points_data_act);
+    toolBar->addAction(ear_data_trans_act);
+    toolBar->addAction(ear_rotation_act);
     toolBar->addWidget(this->pSizeBox);
+
+    toolBar->addAction(after_process_act);
+    toolBar->addAction(cal_act);
+    
 
 
     /*
@@ -629,9 +595,7 @@ MainWindow::MainWindow(QWidget *parent) :
     renderWindowRight = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 
     this->qvtkWidgetLeft->SetRenderWindow(renderWindowLeft);
-
     this->qvtkWidgetMid->SetRenderWindow(renderWindowMid);
-
     this->qvtkWidgetRight->SetRenderWindow(renderWindowRight);
 
     // A renderer and render window
@@ -643,11 +607,10 @@ MainWindow::MainWindow(QWidget *parent) :
     rightrender->SetBackground(0.4, 0.4, 0.4);
 
 
-    // VTK/Qt wedded
+
     renderWindowLeft->AddRenderer(leftrenderer);
     renderWindowMid->AddRenderer(midrender);
     renderWindowRight->AddRenderer(rightrender);
-
 
     renderWindowLeft->Render();
     renderWindowMid->Render();
@@ -658,28 +621,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->openfile_act, SIGNAL(triggered()), this, SLOT(openFile()));
     connect(this->savefile_act, SIGNAL(triggered()), this, SLOT(saveFile()));
 
-    connect(this->key_0_act, SIGNAL(triggered()), this, SLOT(back()));
-    connect(this->key_1_act, SIGNAL(triggered()), this, SLOT(selectFirst()));
-    connect(this->key_2_act, SIGNAL(triggered()), this, SLOT(selectSecond()));
-    connect(this->key_c_act, SIGNAL(triggered()), this, SLOT(clearAllPoints()));
-    connect(this->key_k_act, SIGNAL(triggered()), this, SLOT(deleteLastPoint()));
-    connect(this->key_n_act, SIGNAL(triggered()), this, SLOT(cut()));
+    connect(this->back_act, SIGNAL(triggered()), this, SLOT(back()));
+    connect(this->select_first_act, SIGNAL(triggered()), this, SLOT(selectFirst()));
+    connect(this->select_second_act, SIGNAL(triggered()), this, SLOT(selectSecond()));
+    connect(this->clear_all_act, SIGNAL(triggered()), this, SLOT(clearAllPoints()));
+    connect(this->delete_last_act, SIGNAL(triggered()), this, SLOT(deleteLastPoint()));
+    connect(this->cut_act, SIGNAL(triggered()), this, SLOT(cut()));
 
-    connect(this->key_u_act, SIGNAL(triggered()), this, SLOT(makeUnion()));
+    connect(this->union_act, SIGNAL(triggered()), this, SLOT(makeUnion()));
     connect(this->import_act, SIGNAL(triggered()), this, SLOT(importFile()));
-    connect(this->addpaper_act, SIGNAL(triggered()), this, SLOT(addPaper()));
+    connect(this->add_paper_act, SIGNAL(triggered()), this, SLOT(addPaper()));
     connect(this->reset_act, SIGNAL(triggered()), this, SLOT(reSet()));
-    connect(this->after_act, SIGNAL(triggered()), this, SLOT(afterProc()));
+    connect(this->after_process_act, SIGNAL(triggered()), this, SLOT(afterProc()));
     connect(this->cal_act, SIGNAL(triggered()), this, SLOT(calculation()));
-    connect(this->key_m_act, SIGNAL(triggered()), this, SLOT(key_m()));
-    connect(this->key_a_act, SIGNAL(triggered()), this, SLOT(key_a()));
-    connect(this->key_v_act, SIGNAL(triggered()), this, SLOT(key_v()));
-    connect(this->key_s_act, SIGNAL(triggered()), this, SLOT(key_s()));
-    connect(this->key_plus_act, SIGNAL(triggered()), this, SLOT(key_plus()));
+    connect(this->chose_points_ear_act, SIGNAL(triggered()), this, SLOT(key_m()));
+    connect(this->chose_points_data_act, SIGNAL(triggered()), this, SLOT(key_a()));
+    connect(this->ear_data_trans_act, SIGNAL(triggered()), this, SLOT(key_v()));
+    connect(this->ear_rotation_act, SIGNAL(triggered()), this, SLOT(key_s()));
     connect( pSizeBox, SIGNAL( activated( QString ) ), this, SLOT( slotSize( QString ) ) );
-//    connect(this->scale_down_act, SIGNAL(triggered()), this, SLOT(scaling_down()));
-//    connect(this->scale_up_act, SIGNAL(triggered()), this, SLOT(scaling_up()));
-
 
 }
 
@@ -695,13 +654,13 @@ void MainWindow::reSet()
     if (acContour != NULL) {
         acContour->ClearAllNodes();
     }
-    g_vclick_points1.clear();
+    g_vclick_points.clear();
 
-    if (vleftActors.size() > 0) {
-        leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
-        removeRecentActor();
+    if (g_vopen_data_actors.size() > 0) {
+        leftrenderer->RemoveActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        rmRecentActorPoints();
     }
-    if (thePlaneActor) {
+    if (g_front_plane_actor) {
         removeThePlane();
     }
 
@@ -710,24 +669,23 @@ void MainWindow::reSet()
     midrender->RemoveAllViewProps();
 
 
-    vleftActors.clear();
-    vleftPolydatas.clear();
-    vimportPolydatas.clear();
-    vimportActor.clear();
+    g_vopen_data_actors.clear();
+    g_vopen_data.clear();
+    g_vimport_data.clear();
+    g_vimport_data_actors.clear();
 
-    thePlaneActor = NULL;
-    ear = NULL;
+    g_front_plane_actor = NULL;
     CUTTING_MODE = 1;
-    frontPlane = NULL;
-    clipSource = NULL;
-    midActor = NULL;
-    rightActor = NULL;
+    g_front_plane = NULL;
+    g_click_source_data = NULL;
+    g_mid_actor = NULL;
+    g_right_actor = NULL;
     this->acContour = NULL;
-    midActor = NULL;
-    rightActor = NULL;
-    mid_data = NULL;
-    right_data = NULL;
-    trifilter = NULL;
+    g_mid_actor = NULL;
+    g_right_actor = NULL;
+    g_mid_data = NULL;
+    g_right_data = NULL;
+    g_clipper_trifilter = NULL;
     remat->Zero();
 
     reRenderAll();
@@ -735,76 +693,76 @@ void MainWindow::reSet()
 
 void MainWindow::afterProc()
 {
-  reSet();
-  CUTTING_MODE = false;
-  remat->Zero();
-  QString filename = QFileDialog :: getOpenFileName(this, NULL, NULL, "*.*");
+  // reSet();
+  // CUTTING_MODE = false;
+  // remat->Zero();
+  // QString filename = QFileDialog :: getOpenFileName(this, NULL, NULL, "*.*");
 
-  if (filename != "") {
-      tetgenio in, out;
-      QByteArray ba = filename.toLatin1();
-      in.load_stl(ba.data());
-      vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-      vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
-
-
-      tetrahedralize("apq1.1", &in, &out);
-      int *mtetrahedron = out.tetrahedronlist;
-      double *pointslist = out.pointlist;
-
-      double arr[3];
-      for (int i = 0; i < out.numberofpoints; ++i) {
-        int idx = i * 3;
-        arr[0] = pointslist[idx];
-        arr[1] = pointslist[idx + 1];
-        arr[2] = pointslist[idx + 2];
-        points->InsertPoint(i + 1, arr);
-      }
-
-      vtkIdType ids[4];
-      // set points
-      vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = 
-        vtkSmartPointer<vtkUnstructuredGrid>::New();
-      unstructuredGrid->SetPoints(points);
-      for (int i = 0; i < out.numberoftetrahedra; ++i) {
-        int idx = i * 4; 
-        ids[0] = mtetrahedron[idx];
-        ids[1] = mtetrahedron[idx + 1];
-        ids[2] = mtetrahedron[idx + 2];
-        ids[3] = mtetrahedron[idx + 3];
-        unstructuredGrid->InsertNextCell(VTK_TETRA, 4, ids); 
-      }
-
-      vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
-      mapper->SetInputData(unstructuredGrid);
-
-      vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-      actor->SetMapper(mapper);
-      actor->GetProperty()->SetColor(0.194,0.562, 0.75);
-
-      leftrenderer->AddActor(actor);
-      leftrenderer->ResetCamera();
-      midrender->ResetCamera();
-      rightrender->ResetCamera();
+  // if (filename != "") {
+  //     tetgenio in, out;
+  //     QByteArray ba = filename.toLatin1();
+  //     in.load_stl(ba.data());
+  //     vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+  //     vtkSmartPointer<vtkCellArray> lines = vtkSmartPointer<vtkCellArray>::New();
 
 
-      this->renderWindowInteractor = renderWindowLeft->GetInteractor();
-      this->renderWindowInteractor->ReInitialize();
+  //     tetrahedralize("apq1.1", &in, &out);
+  //     int *mtetrahedron = out.tetrahedronlist;
+  //     double *pointslist = out.pointlist;
 
-      //----------------start call back----------------------------------
+  //     double arr[3];
+  //     for (int i = 0; i < out.numberofpoints; ++i) {
+  //       int idx = i * 3;
+  //       arr[0] = pointslist[idx];
+  //       arr[1] = pointslist[idx + 1];
+  //       arr[2] = pointslist[idx + 2];
+  //       points->InsertPoint(i + 1, arr);
+  //     }
 
-      MouseInteractorStyle *style = new MouseInteractorStyle();
-      style->SetDefaultRenderer(leftrenderer);
-      style->Data = unstructuredGrid;
-      this->renderWindowInteractor->SetInteractorStyle(style);
-      this->renderWindowInteractor->Start();
-      reRenderAll();
-      //----------------end call back-------------------------------------------------
-  }
-  else {
-      cout << "invalid file." << endl;
-      return;
-  }
+  //     vtkIdType ids[4];
+  //     // set points
+  //     vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = 
+  //       vtkSmartPointer<vtkUnstructuredGrid>::New();
+  //     unstructuredGrid->SetPoints(points);
+  //     for (int i = 0; i < out.numberoftetrahedra; ++i) {
+  //       int idx = i * 4; 
+  //       ids[0] = mtetrahedron[idx];
+  //       ids[1] = mtetrahedron[idx + 1];
+  //       ids[2] = mtetrahedron[idx + 2];
+  //       ids[3] = mtetrahedron[idx + 3];
+  //       unstructuredGrid->InsertNextCell(VTK_TETRA, 4, ids); 
+  //     }
+
+  //     vtkSmartPointer<vtkDataSetMapper> mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+  //     mapper->SetInputData(unstructuredGrid);
+
+  //     vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+  //     actor->SetMapper(mapper);
+  //     actor->GetProperty()->SetColor(0.194,0.562, 0.75);
+
+  //     leftrenderer->AddActor(actor);
+  //     leftrenderer->ResetCamera();
+  //     midrender->ResetCamera();
+  //     rightrender->ResetCamera();
+
+
+  //     this->renderWindowInteractor = renderWindowLeft->GetInteractor();
+  //     this->renderWindowInteractor->ReInitialize();
+
+  //     //----------------start call back----------------------------------
+
+  //     MouseInteractorStyle *style = new MouseInteractorStyle();
+  //     style->SetDefaultRenderer(leftrenderer);
+  //     style->Data = unstructuredGrid;
+  //     this->renderWindowInteractor->SetInteractorStyle(style);
+  //     this->renderWindowInteractor->Start();
+  //     reRenderAll();
+  //     //----------------end call back-------------------------------------------------
+  // }
+  // else {
+  //     cout << "invalid file." << endl;
+  //     return;
+  // }
 }
 
 
@@ -834,11 +792,11 @@ void MainWindow::mouse()
 
 void MainWindow::key_m()
 {
-  if (vimportPolydatas.size() > 0) {
+  if (g_vimport_data.size() > 0) {
     cout << "select two pieces on the ear" << endl;
     CellPickerInteractorStyle *CPIStyle = new CellPickerInteractorStyle();
     CPIStyle->SetRenderer(leftrenderer);
-    CPIStyle->SetData(vimportPolydatas[vimportPolydatas.size() - 1]);
+    CPIStyle->SetData(g_vimport_data[g_vimport_data.size() - 1]);
     CPIStyle->SetMode('C');
     this->renderWindowInteractor->SetInteractorStyle(CPIStyle);
   }
@@ -847,11 +805,11 @@ void MainWindow::key_m()
 
 void MainWindow::key_a()
 {
-  if (vleftPolydatas.size() > 0) {
+  if (g_vopen_data.size() > 0) {
     cout << "select two pieces on the object" << endl;
     CellPickerInteractorStyle *CPIStyle = new CellPickerInteractorStyle();
     CPIStyle->SetRenderer(leftrenderer);
-    CPIStyle->SetData(vleftPolydatas[vleftPolydatas.size() - 1]);
+    CPIStyle->SetData(g_vopen_data[g_vopen_data.size() - 1]);
     CPIStyle->SetMode('P');
     this->renderWindowInteractor->SetInteractorStyle(CPIStyle); 
   }
@@ -859,24 +817,12 @@ void MainWindow::key_a()
 }
 
 
-/**
- * 耳朵旋转角度的调整
- */
-void MainWindow::key_plus()
-{
-  cout << "type in the angle you want to adjust the ear (deafault angle is 15): ";
-  string in;
-  cin >> in;
-  angle = stod(in);
-  angle = 3.1415926 / (180 / angle);
-}
-
 void MainWindow::key_s()
 {
-  if (vimportPolydatas.size() > 0) {
-    assert(vimportPolydatas.size() == vimportActor.size());
-    vtkSmartPointer<vtkPolyData> earData = vimportPolydatas[vimportPolydatas.size() - 1];
-    vtkSmartPointer<vtkActor> earActor = vimportActor[vimportActor.size() - 1];
+  if (g_vimport_data.size() > 0) {
+    assert(g_vimport_data.size() == g_vimport_data_actors.size());
+    vtkSmartPointer<vtkPolyData> earData = g_vimport_data[g_vimport_data.size() - 1];
+    vtkSmartPointer<vtkActor> earActor = g_vimport_data_actors[g_vimport_data_actors.size() - 1];
     
     double poib1[3], poib2[3], poib3[3];
     vtkSmartPointer<vtkIdList> listb =
@@ -930,10 +876,10 @@ void MainWindow::key_s()
 
 void MainWindow::key_v()
 {
-  if (vimportPolydatas.size() > 0) {
-    assert(vimportPolydatas.size() == vimportActor.size());
-    vtkSmartPointer<vtkPolyData> earData = vimportPolydatas[vimportPolydatas.size() - 1];
-    vtkSmartPointer<vtkActor> earActor = vimportActor[vimportActor.size() - 1];
+  if (g_vimport_data.size() > 0) {
+    assert(g_vimport_data.size() == g_vimport_data_actors.size());
+    vtkSmartPointer<vtkPolyData> earData = g_vimport_data[g_vimport_data.size() - 1];
+    vtkSmartPointer<vtkActor> earActor = g_vimport_data_actors[g_vimport_data_actors.size() - 1];
     cout << "Complete the transformation" << endl;
     double shrink = 1;
     double p1 = ::left[0] - ::right[0];
@@ -974,10 +920,10 @@ void MainWindow::key_v()
     vtkSmartPointer<vtkTransform> trss =
       vtkSmartPointer<vtkTransform>::New();
     trss->Translate(-::left[0], -::left[1], -::left[2]);
-    transdata->SetInputData(vleftPolydatas[vleftPolydatas.size() - 1]);
+    transdata->SetInputData(g_vopen_data[g_vopen_data.size() - 1]);
     transdata->SetTransform(trss);
     transdata->Update();
-    vleftPolydatas[vleftPolydatas.size() - 1]->DeepCopy(transdata->GetOutput());
+    g_vopen_data[g_vopen_data.size() - 1]->DeepCopy(transdata->GetOutput());
     trss->MultiplyPoint(::left, ::left);
     trss->MultiplyPoint(::right, ::right);
 
@@ -1013,10 +959,10 @@ void MainWindow::key_v()
 
     vtkSmartPointer<vtkIdList> lista =
       vtkSmartPointer<vtkIdList>::New();
-    vleftPolydatas[vleftPolydatas.size() - 1]->GetCellPoints(idr, lista);
-    vleftPolydatas[vleftPolydatas.size() - 1]->GetPoint(lista->GetId(0), poib1);
-    vleftPolydatas[vleftPolydatas.size() - 1]->GetPoint(lista->GetId(1), poib2);
-    vleftPolydatas[vleftPolydatas.size() - 1]->GetPoint(lista->GetId(2), poib3);
+    g_vopen_data[g_vopen_data.size() - 1]->GetCellPoints(idr, lista);
+    g_vopen_data[g_vopen_data.size() - 1]->GetPoint(lista->GetId(0), poib1);
+    g_vopen_data[g_vopen_data.size() - 1]->GetPoint(lista->GetId(1), poib2);
+    g_vopen_data[g_vopen_data.size() - 1]->GetPoint(lista->GetId(2), poib3);
     cout << "the goal vector is: " << endl;
     vectorAfter[0] = (poib1[0] + poib2[0] + poib3[0]) / 3;
     cout << vectorAfter[0] << endl;
@@ -1099,12 +1045,12 @@ void MainWindow::key_v()
     cout << poisy[2] - poisz[2] << endl;
 
     leftrenderer->RemoveActor(earActor);
-    vtkPolyData* polyData = vimportPolydatas[vimportPolydatas.size() - 1];
-    vimportPolydatas.pop_back();
+    vtkPolyData* polyData = g_vimport_data[g_vimport_data.size() - 1];
+    g_vimport_data.pop_back();
     polyData->Delete();
     vtkSmartPointer<vtkPolyData> temp = vtkSmartPointer<vtkPolyData>::New();
     temp->DeepCopy(transdata->GetOutput());
-    vimportPolydatas.push_back(temp);
+    g_vimport_data.push_back(temp);
     sourceMapper->SetInputData(temp);
     earActor->SetMapper(sourceMapper);
     leftrenderer->AddActor(earActor);
@@ -1159,14 +1105,18 @@ void MainWindow::keyboard()
 
 }
 
+
+/**
+ * 打开文件
+ */
 void MainWindow::openFile()
 {
     if (acContour == NULL) {
         CUTTING_MODE = 1;
-        frontPlane = NULL;
-        clipSource = NULL;
-        midActor = NULL;
-        rightActor = NULL;
+        g_front_plane = NULL;
+        g_click_source_data = NULL;
+        g_mid_actor = NULL;
+        g_right_actor = NULL;
         cout << "init..." << endl;
         remat->Zero();
 
@@ -1174,20 +1124,17 @@ void MainWindow::openFile()
         QString filename = QFileDialog :: getOpenFileName(this, NULL, NULL, "*.*");
 
         if (filename != "") {
-            clipSource = getPolyData(filename);
+            g_click_source_data = getPolyData(filename);
 
 
-            assert(clipSource != NULL);
+            assert(g_click_source_data != NULL);
 
-            // PolyData to process
-            center = clipSource->GetCenter();
-    //        cout << "center: " << center[0] << " " << center[1] << " " << center[2] << endl;
-            bounds = clipSource->GetBounds();
+            g_bounds = g_click_source_data->GetBounds();
 
             //create mapper and actor for each polyData
             vtkSmartPointer<vtkDataSetMapper> sourceMapper =
             vtkSmartPointer<vtkDataSetMapper>::New();
-            sourceMapper->SetInputData(clipSource);
+            sourceMapper->SetInputData(g_click_source_data);
 
             vtkSmartPointer<vtkActor> sourceActor =
             vtkSmartPointer<vtkActor>::New();
@@ -1198,8 +1145,8 @@ void MainWindow::openFile()
             scale = calscale(sourceActor);
 
             // vector
-            vleftActors.push_back(sourceActor);
-            vleftPolydatas.push_back(clipSource);
+            g_vopen_data_actors.push_back(sourceActor);
+            g_vopen_data.push_back(g_click_source_data);
 
 
             leftrenderer->AddActor(sourceActor);
@@ -1217,9 +1164,9 @@ void MainWindow::openFile()
             vtkContourWidget *contourWidget = vtkContourWidget::New();
             contourWidget->SetInteractor(renderWindowInteractor);
             contourWidget->SetRepresentation(acContour);
-            pointPlacer = vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
-            pointPlacer->AddProp(sourceActor);
-            acContour->SetPointPlacer(pointPlacer);
+            g_points_placer = vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
+            g_points_placer->AddProp(sourceActor);
+            acContour->SetPointPlacer(g_points_placer);
             vtkLinearContourLineInterpolator * interpolator =
             vtkLinearContourLineInterpolator::New();
             acContour->SetLineInterpolator(interpolator);
@@ -1264,7 +1211,7 @@ void MainWindow::saveFile()
      vtkSmartPointer<vtkSTLWriter> stlWriter =
        vtkSmartPointer<vtkSTLWriter>::New();
      stlWriter->SetFileName(fileName.toLatin1().data());
-     stlWriter->SetInputData(vleftPolydatas[vleftPolydatas.size() - 1]);
+     stlWriter->SetInputData(g_vopen_data[g_vopen_data.size() - 1]);
      stlWriter->Write();
      cout << "done\n";
 }
@@ -1284,11 +1231,11 @@ void MainWindow::deleteLastPoint()
     {
         cout << "Delete the last node" << endl;
         acContour->DeleteLastNode();
-        g_vclick_points1.pop_back();
-        if (g_vclick_points1.size() == 0) {
+        g_vclick_points.pop_back();
+        if (g_vclick_points.size() == 0) {
           cout << "no points left" << endl;
           clearAllNodes(acContour, leftrenderer);
-          assert(frontPlane == NULL);
+          assert(g_front_plane == NULL);
         }
     }
     reRenderAll();
@@ -1309,29 +1256,29 @@ void MainWindow::clearAllPoints()
  */
 void MainWindow::back()
 {
-    if (vleftActors.size() > 1)
+    if (g_vopen_data_actors.size() > 1)
     {
-        assert(vleftActors.size() == vleftPolydatas.size());
-        leftrenderer->RemoveActor(clipperActor);
-        if (thePlaneActor)
+        assert(g_vopen_data_actors.size() == g_vopen_data.size());
+        leftrenderer->RemoveActor(g_clipper_actor);
+        if (g_front_plane_actor)
             removeThePlane();
-        if (vleftActors.size() != 1) {
-          removeRecentActor();  //------remove placer on actor--
+        if (g_vopen_data_actors.size() != 1) {
+          rmRecentActorPoints();  //------remove placer on actor--
 
-          vtkActor* actor = vleftActors[vleftActors.size() - 1];
+          vtkActor* actor = g_vopen_data_actors[g_vopen_data_actors.size() - 1];
           leftrenderer->RemoveActor(actor);
-          vleftActors.pop_back();
+          g_vopen_data_actors.pop_back();
           actor->Delete();
 
-          vtkPolyData* polyData = vleftPolydatas[vleftPolydatas.size() - 1];
-          vleftPolydatas.pop_back();
+          vtkPolyData* polyData = g_vopen_data[g_vopen_data.size() - 1];
+          g_vopen_data.pop_back();
           polyData->Delete();
 
-          leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
+          leftrenderer->AddActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
           clearAllNodes(acContour, leftrenderer);
-          pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
+          g_points_placer->AddProp(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
         }
-        assert(frontPlane == NULL);
+        assert(g_front_plane == NULL);
     }
     reRenderAll();
 }
@@ -1342,21 +1289,22 @@ void MainWindow::back()
  */
 void MainWindow::selectFirst()
 {
-    if (midActor)
+    if (g_mid_actor)
     {
-        leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
-        leftrenderer->RemoveActor(clipperActor);
-        removeRecentActor();
-        if (thePlaneActor)
+        leftrenderer->RemoveActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        leftrenderer->RemoveActor(g_clipper_actor);
+        rmRecentActorPoints();
+        if (g_front_plane_actor)
             removeThePlane();
-        midrender->RemoveActor(midActor);
-        rightrender->RemoveActor(rightActor);
-        vleftActors.push_back(midActor);
-        vleftPolydatas.push_back(mid_data);
+        midrender->RemoveActor(g_mid_actor);
+        rightrender->RemoveActor(g_right_actor);
+        g_vopen_data_actors.push_back(g_mid_actor);
+
+        g_vopen_data.push_back(g_mid_data);
         clearAllNodes(acContour, leftrenderer);
-        leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
-        pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
-        assert(frontPlane == NULL);
+        leftrenderer->AddActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        g_points_placer->AddProp(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        assert(g_front_plane == NULL);
     }
     reRenderAll();
 }
@@ -1367,21 +1315,21 @@ void MainWindow::selectFirst()
  */
 void MainWindow::selectSecond()
 {
-    if (rightActor)
+    if (g_right_actor)
     {
-        removeRecentActor();
-        leftrenderer->RemoveActor(vleftActors[vleftActors.size() - 1]);
-        leftrenderer->RemoveActor(clipperActor);
-        if (thePlaneActor)
+        rmRecentActorPoints();
+        leftrenderer->RemoveActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        leftrenderer->RemoveActor(g_clipper_actor);
+        if (g_front_plane_actor)
             removeThePlane();
-        midrender->RemoveActor(midActor);
-        rightrender->RemoveActor(rightActor);
-        vleftActors.push_back(rightActor);
-        vleftPolydatas.push_back(right_data);
+        midrender->RemoveActor(g_mid_actor);
+        rightrender->RemoveActor(g_right_actor);
+        g_vopen_data_actors.push_back(g_right_actor);
+        g_vopen_data.push_back(g_right_data);
         clearAllNodes(acContour, leftrenderer);
-        leftrenderer->AddActor(vleftActors[vleftActors.size() - 1]);
-        pointPlacer->AddProp(vleftActors[vleftActors.size() - 1]);
-        assert(frontPlane == NULL);
+        leftrenderer->AddActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        g_points_placer->AddProp(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        assert(g_front_plane == NULL);
     }
     reRenderAll();
 }
@@ -1389,15 +1337,15 @@ void MainWindow::selectSecond()
 
 void MainWindow::cut()
 {
-    if ( CUTTING_MODE == 1 && g_vclick_points1.size() > 2)
+    if ( CUTTING_MODE == 1 && g_vclick_points.size() > 2)
     {
         generateClipperData();
         generateClippedByBool();  //draw in mid and right
 
         midrender->SetActiveCamera(leftrenderer->GetActiveCamera());
         rightrender->SetActiveCamera(leftrenderer->GetActiveCamera());
-        frontPlane = NULL;
-        if (thePlaneActor)
+        g_front_plane = NULL;
+        if (g_front_plane_actor)
             removeThePlane();
     }
     reRenderAll();
@@ -1423,8 +1371,8 @@ void MainWindow::objectMode()
 void MainWindow::importFile()
 {
     CUTTING_MODE = 0;
-    removeRecentActor();
-    if (thePlaneActor)
+    rmRecentActorPoints();
+    if (g_front_plane_actor)
         removeThePlane();
 
     //next version use mode to choose whether to edit or cut
@@ -1433,7 +1381,7 @@ void MainWindow::importFile()
     vtkSmartPointer<vtkPolyData> ear = getPolyData(filename);
     assert(ear != NULL);
 
-    vimportPolydatas.push_back(ear);
+    g_vimport_data.push_back(ear);
 
     vtkSmartPointer<vtkDataSetMapper> earMapper = vtkSmartPointer<vtkDataSetMapper>::New();
     earMapper->SetInputData(ear);
@@ -1444,7 +1392,7 @@ void MainWindow::importFile()
     earActor1->SetMapper(earMapper);
     earActor1->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
     earActor1->GetProperty()->SetInterpolationToFlat();
-    vimportActor.push_back(earActor1);
+    g_vimport_data_actors.push_back(earActor1);
     leftrenderer->AddActor(earActor1);
 
     reRenderAll();
@@ -1455,20 +1403,20 @@ void MainWindow::importFile()
 
 void MainWindow::makeUnion()
 {
-    if (CUTTING_MODE == 0 && vimportPolydatas.size() > 0) {
+    if (CUTTING_MODE == 0 && g_vimport_data.size() > 0) {
         cout << "processing union" << endl;
 
         vtkSmartPointer<vtkMatrix4x4> mat =
             vtkSmartPointer<vtkMatrix4x4>::New();
 
-        vtkSmartPointer<vtkActor> & earActor1 = vimportActor[vimportActor.size() - 1];
+        vtkSmartPointer<vtkActor> & earActor1 = g_vimport_data_actors[g_vimport_data_actors.size() - 1];
         earActor1->GetMatrix(mat);
         vtkSmartPointer<vtkTransform> trans =
             vtkSmartPointer<vtkTransform>::New();
         trans->SetMatrix(mat);
         vtkSmartPointer<vtkPolyData>  ear1 =
             vtkSmartPointer<vtkPolyData>::New();
-        ear1 = vimportPolydatas[vimportPolydatas.size() - 1];
+        ear1 = g_vimport_data[g_vimport_data.size() - 1];
         vtkSmartPointer<vtkTransformPolyDataFilter> transdata =
             vtkSmartPointer<vtkTransformPolyDataFilter>::New();
         transdata->SetInputData(ear1);
@@ -1478,7 +1426,7 @@ void MainWindow::makeUnion()
 
         vtkSmartPointer<vtkMatrix4x4> mat1 =
             vtkSmartPointer<vtkMatrix4x4>::New();
-        vtkSmartPointer<vtkActor> & sActor = vleftActors[vleftActors.size() - 1];
+        vtkSmartPointer<vtkActor> & sActor = g_vopen_data_actors[g_vopen_data_actors.size() - 1];
         sActor->GetMatrix(mat1);
 
         vtkSmartPointer<vtkTransform> trans1 =
@@ -1486,7 +1434,7 @@ void MainWindow::makeUnion()
         trans1->SetMatrix(mat1);
         vtkSmartPointer<vtkPolyData> source =
             vtkSmartPointer<vtkPolyData>::New();
-        source = vleftPolydatas[vleftPolydatas.size() - 1];
+        source = g_vopen_data[g_vopen_data.size() - 1];
         vtkSmartPointer<vtkTransformPolyDataFilter> transdata1 =
             vtkSmartPointer<vtkTransformPolyDataFilter>::New();
         transdata1->SetInputData(source);
@@ -1514,8 +1462,8 @@ void MainWindow::makeUnion()
         leftrenderer->AddActor(booleanOperationActor);
 
         booleanOperation->Update();
-        vleftPolydatas.push_back(booleanOperation->GetOutput());
-        vleftActors.push_back(booleanOperationActor);
+        g_vopen_data.push_back(booleanOperation->GetOutput());
+        g_vopen_data_actors.push_back(booleanOperationActor);
     }
     reRenderAll();
 }
@@ -1523,8 +1471,8 @@ void MainWindow::makeUnion()
 
 void MainWindow::addPaper()
 {
-    parallelplane(leftrenderer, thePlaneActor);
-    leftrenderer->AddActor(thePlaneActor);
+    parallelplane(leftrenderer, g_front_plane_actor);
+    leftrenderer->AddActor(g_front_plane_actor);
     reRenderAll();
 }
 
@@ -1542,11 +1490,11 @@ void MainWindow::reRenderAll()
 
 void MainWindow::scaling_down()
 {
-    vtkSmartPointer<vtkPolyData>  ear = vimportPolydatas[vimportPolydatas.size() - 1];
+    vtkSmartPointer<vtkPolyData>  ear = g_vimport_data[g_vimport_data.size() - 1];
 
     int flag = 0;
     vtkSmartPointer<vtkMatrix4x4> remat1 = vtkSmartPointer<vtkMatrix4x4>::New();
-    vtkSmartPointer<vtkActor> & earActor = vimportActor[vimportActor.size() - 1];
+    vtkSmartPointer<vtkActor> & earActor = g_vimport_data_actors[g_vimport_data_actors.size() - 1];
     earActor->GetMatrix(remat1);
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -1592,8 +1540,8 @@ void MainWindow::scaling_down()
     transdata->Update();
     ear = transdata->GetOutput();
 
-    vimportPolydatas.pop_back();
-    vimportPolydatas.push_back(ear);
+    g_vimport_data.pop_back();
+    g_vimport_data.push_back(ear);
 
     vtkSmartPointer<vtkDataSetMapper> earMapper =
         vtkSmartPointer<vtkDataSetMapper>::New();
@@ -1603,9 +1551,9 @@ void MainWindow::scaling_down()
     earActor1->SetMapper(earMapper);
     earActor1->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
     earActor1->GetProperty()->SetInterpolationToFlat();
-    leftrenderer->RemoveActor(vimportActor[vimportActor.size() - 1]);   //last actor
-    vimportActor.pop_back();
-    vimportActor.push_back(earActor1);
+    leftrenderer->RemoveActor(g_vimport_data_actors[g_vimport_data_actors.size() - 1]);   //last actor
+    g_vimport_data_actors.pop_back();
+    g_vimport_data_actors.push_back(earActor1);
     leftrenderer->AddActor(earActor1);
 
     reRenderAll();
@@ -1613,11 +1561,11 @@ void MainWindow::scaling_down()
 
 void MainWindow::scaling_up()
 {
-    vtkSmartPointer<vtkPolyData>  ear = vimportPolydatas[vimportPolydatas.size() - 1];
+    vtkSmartPointer<vtkPolyData>  ear = g_vimport_data[g_vimport_data.size() - 1];
 
     int flag = 0;
     vtkSmartPointer<vtkMatrix4x4> remat1 = vtkSmartPointer<vtkMatrix4x4>::New();
-    vtkSmartPointer<vtkActor> & earActor = vimportActor[vimportActor.size() - 1];
+    vtkSmartPointer<vtkActor> & earActor = g_vimport_data_actors[g_vimport_data_actors.size() - 1];
     earActor->GetMatrix(remat1);
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -1665,8 +1613,8 @@ void MainWindow::scaling_up()
     transdata->Update();
     ear = transdata->GetOutput();
 
-    vimportPolydatas.pop_back();
-    vimportPolydatas.push_back(ear);
+    g_vimport_data.pop_back();
+    g_vimport_data.push_back(ear);
 
     vtkSmartPointer<vtkDataSetMapper> earMapper =
         vtkSmartPointer<vtkDataSetMapper>::New();
@@ -1676,9 +1624,9 @@ void MainWindow::scaling_up()
     earActor1->SetMapper(earMapper);
     earActor1->GetProperty()->SetColor(1.0000, 0.3882, 0.2784);
     earActor1->GetProperty()->SetInterpolationToFlat();
-    leftrenderer->RemoveActor(vimportActor[vimportActor.size() - 1]);   //last actor
-    vimportActor.pop_back();
-    vimportActor.push_back(earActor1);
+    leftrenderer->RemoveActor(g_vimport_data_actors[g_vimport_data_actors.size() - 1]);   //last actor
+    g_vimport_data_actors.pop_back();
+    g_vimport_data_actors.push_back(earActor1);
     leftrenderer->AddActor(earActor1);
 
     reRenderAll();

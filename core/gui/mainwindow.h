@@ -63,7 +63,6 @@ public slots:
   void key_a();
   void key_v();
 
-  void key_plus();
   void key_s();
 
   void slotSize(QString str);
@@ -77,34 +76,23 @@ private:
 
   QAction * openfile_act;
   QAction * savefile_act;
-  QAction * key_k_act;            //delete last point
-  QAction * key_c_act;             //clear all points
-  QAction * key_0_act;              //back
-  QAction * key_1_act;              //select the first module
-  QAction * key_2_act;              //select the second mudule
-
-  QAction * key_u_act;              //union
-
+  QAction * delete_last_act;            //delete last point
+  QAction * clear_all_act;             //clear all points
+  QAction * back_act;              //back
+  QAction * select_first_act;              //select the first module
+  QAction * select_second_act;              //select the second mudule
+  QAction * union_act;              //union
   QAction * import_act;             //import file
-
-  QAction * key_n_act;
-
-  QAction * addpaper_act;//
-
+  QAction * cut_act;
+  QAction * add_paper_act;
   QAction * reset_act;
-  QAction * after_act;
+  QAction * after_process_act;
   QAction * cal_act;
-
-  QAction * key_m_act;  // choose points on the ear
-  QAction * key_a_act;  // choose points on the clipper
-  QAction * key_v_act;  // action
-
-  QAction * key_s_act;
-  QAction * key_plus_act;
+  QAction * chose_points_ear_act;  // choose points on the ear
+  QAction * chose_points_data_act;  // choose points on the clipper
+  QAction * ear_data_trans_act;  // action
+  QAction * ear_rotation_act;
   QComboBox * pSizeBox;
-//  QAction * scale_up_act;
-//  QAction * scale_down_act;
-
 
 };
 
