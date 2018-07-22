@@ -62,20 +62,20 @@ double g_origin[3];       // 该平面上某一点的坐标
 double g_scal = 1;         // 平面的缩放倍数，保证平面足够大
 
 
-//data used to add the prosthesis
-double left[4] = { 0.0, 0.0, 0.0, 1.0 };
-double right[4] = { 0.0, 0.0, 0.0, 1.0 };
-double leftn[4] = { 0.0, 0.0, 0.0, 1.0 };
-double rightn[4] = { 0.0, 0.0, 0.0, 1.0 };
+//data used to add the prosthesis 用于假体变换的数组
+double left[4] = { 0.0, 0.0, 0.0, 1.0 };//假体上选取的第一个cell的质心
+double right[4] = { 0.0, 0.0, 0.0, 1.0 };//假体上选取的第二个cell的质心
+double leftn[4] = { 0.0, 0.0, 0.0, 1.0 };//耳朵上选取的第一个cell的质心
+double rightn[4] = { 0.0, 0.0, 0.0, 1.0 };//耳朵上选取的第二个cell的质心
 double enormal[3] = { 0, 0, 0 };
 
-//the center of the model
+//the center of the model 用于记录假体模型的中心
 double pcenter[3] = { 0,0,0 };
 
-//the ID of the selected cells
+//the ID of the selected cells 记录被鼠标选中的cell或是point的id
 int idl=0, idr=0, idz=0, idy=0, idp=0, ide=0;
 
-//the data used to rotate
+//the data used to rotate 辅助进行旋转的数据，在罗德里格旋转函数中用到
 double u[3];
 double angle = -3.1415926/12;
 
@@ -428,6 +428,8 @@ public:
     mode = input;
   }
 
+  //实现在C和P模式下选点并且保存点信息的函数。被选中的点、线段和平面会被高亮显示。C、P模式见822、835行。
+  //选取点的方式是通过鼠标点击pick一个cell，然后计算这个cell的质心，将质心的信息保存。
   //  virtual void Execute(vtkObject* caller, unsigned long eventId, void* callData)
   virtual void OnLeftButtonDown()
   {
@@ -832,6 +834,8 @@ void MainWindow::key_m()
   reRenderAll();
 }
 
+//P模式
+//在假体上选取点的函数。输入‘P’后在假体上选取两个点，原则与在‘耳朵’上选点时一致。
 void MainWindow::key_a()
 {
   if (g_vopen_data.size() > 0) {
@@ -846,6 +850,8 @@ void MainWindow::key_a()
 }
 
 
+
+//罗德里格旋转公式的实现函数
 void MainWindow::key_s()
 {
   if (g_vimport_data.size() > 0) {
@@ -903,6 +909,11 @@ void MainWindow::key_s()
   reRenderAll();
 }
 
+
+/*将‘耳朵’贴合到假体上选定位置的函数。
+  首先按照‘耳朵’和假体上选取的线段的比例对‘耳朵’进行缩放，
+  再将‘耳朵’和假体进行平移，使得在这两个模型上选取的第一点都对齐到原点，
+  最后依据‘耳朵’和假体上选取的平面的法向量旋转‘耳朵’*/
 void MainWindow::key_v()
 {
   if (g_vimport_data.size() > 0) {
@@ -918,7 +929,7 @@ void MainWindow::key_v()
     double c2 = leftn[1] - rightn[1];
     double c3 = leftn[2] - rightn[2];
 
-    shrink = sqrt((p1*p1 + p2 * p2 + p3 * p3) / (c1*c1 + c2 * c2 + c3 * c3));
+    shrink = sqrt((p1*p1 + p2 * p2 + p3 * p3) / (c1*c1 + c2 * c2 + c3 * c3)); //线段长之比计算缩放比例
     cout << "the ratio: " << shrink << endl;
 
     vtkSmartPointer<vtkTransform> trans =
@@ -931,6 +942,7 @@ void MainWindow::key_v()
     //the shrink
     vtkSmartPointer<vtkMatrix4x4> smat = vtkSmartPointer<vtkMatrix4x4>::New();
     //smat->Zero();
+    //设置矩阵的对角线达到缩放目的
     smat->SetElement(0, 0, shrink);
     smat->SetElement(1, 1, shrink);
     smat->SetElement(2, 2, shrink);
@@ -945,7 +957,7 @@ void MainWindow::key_v()
     earData->DeepCopy(transdata->GetOutput());
 
     /**///translate both source and ear to the ordinary, then rotate the ear
-
+    //将假体和耳朵平移到原点
     vtkSmartPointer<vtkTransform> trss =
       vtkSmartPointer<vtkTransform>::New();
     trss->Translate(-::left[0], -::left[1], -::left[2]);
@@ -966,6 +978,7 @@ void MainWindow::key_v()
     trs->MultiplyPoint(leftn, leftn);
     trs->MultiplyPoint(rightn, rightn);
 
+    //将耳朵旋转与假体贴合
     double vectorBefore[3];
     double vectorAfter[3];
     double poib1[3], poib2[3], poib3[3];
@@ -1190,13 +1203,13 @@ void MainWindow::openFile()
 
             //----------------添加着点回调操作----------------------------------
             this->acContour = vtkOrientedGlyphContourRepresentation::New();
-            vtkSmartPointer<vtkContourWidget> contourWidget = vtkSmartPointer<vtkContourWidget>::New();
+            vtkContourWidget* contourWidget = vtkContourWidget::New();
             contourWidget->SetInteractor(renderWindowInteractor);
             contourWidget->SetRepresentation(acContour);
             g_points_placer = vtkSmartPointer<vtkPolygonalSurfacePointPlacer>::New();
             g_points_placer->AddProp(sourceActor);
             acContour->SetPointPlacer(g_points_placer);
-            vtkSmartPointer<vtkLinearContourLineInterpolator> interpolator = vtkSmartPointer<vtkLinearContourLineInterpolator>::New();
+            vtkLinearContourLineInterpolator* interpolator = vtkLinearContourLineInterpolator::New();
             acContour->SetLineInterpolator(interpolator);
             contourWidget->SetEnabled(1);
             //----------------end call back-------------------------------------------------
@@ -1260,11 +1273,10 @@ void MainWindow::deleteLastPoint()
         acContour->DeleteLastNode();  // 删除最后一个点的显示
         g_vclick_points.pop_back();   // 从数据中删除该点
         if (g_vclick_points.size() == 0) {    // 若点集为空，则将平面去除，因为可能需要重新计算
-          cout << "no points left" << endl;
           clearAllNodes(acContour, leftrenderer);
           assert(g_front_plane == NULL);
         }
-        cout << "Delete the last node" << endl;
+        cout << "delete the last node" << endl;
     }
     reRenderAll();
 }
@@ -1280,7 +1292,13 @@ void MainWindow::clearAllPoints()
 
 
 /**
- * @brief MainWindow::go backwards
+ * 回滚polydata及actor，保证g_vopen_data_actors与g_vopen_data需同步
+ * 步骤如下：
+ * 0. 删除已经渲染的点和面及多余的actor
+ * 1. g_vopen_data_actors回滚
+ * 2. g_vopen_data回滚
+ * 3. 渲染最新的data对应的actor
+ * 4. 添加着点回调
  */
 void MainWindow::back()
 {
@@ -1289,23 +1307,21 @@ void MainWindow::back()
         assert(g_vopen_data_actors.size() == g_vopen_data.size());
         leftrenderer->RemoveActor(g_clipper_actor);
         if (g_front_plane_actor)
-            removeThePlane();
-        if (g_vopen_data_actors.size() != 1) {
-          rmRecentActorPoints();
+          removeThePlane();
 
-          vtkSmartPointer<vtkActor> actor = g_vopen_data_actors.back();
-          leftrenderer->RemoveActor(actor);
-          g_vopen_data_actors.pop_back();
-          actor->Delete();
+        rmRecentActorPoints();
+        vtkSmartPointer<vtkActor> actor = g_vopen_data_actors.back();
+        leftrenderer->RemoveActor(actor);
+        g_vopen_data_actors.pop_back();
+        actor->Delete();
 
-          vtkSmartPointer<vtkPolyData> polyData = g_vopen_data.back();
-          g_vopen_data.pop_back();
-          polyData->Delete();
+        vtkSmartPointer<vtkPolyData> polyData = g_vopen_data.back();
+        g_vopen_data.pop_back();
+        polyData->Delete();
 
-          leftrenderer->AddActor(g_vopen_data_actors.back());
-          clearAllNodes(acContour, leftrenderer);
-          g_points_placer->AddProp(g_vopen_data_actors.back());
-        }
+        leftrenderer->AddActor(g_vopen_data_actors.back());
+        clearAllNodes(acContour, leftrenderer);
+        g_points_placer->AddProp(g_vopen_data_actors.back());
         assert(g_front_plane == NULL);
     }
     reRenderAll();
@@ -1313,25 +1329,32 @@ void MainWindow::back()
 
 
 /**
- * @brief SideBySideRenderWindowsQt::select First window(mid-window)
+ * 选择第一个输出（右上角）
+ * 步骤如下：
+ * 0. 删除左边窗口已经渲染的点和面及多余的actor
+ * 1. 清空右上角、右下角的数据
+ * 2. 将选择的数据渲染到左窗口
+ * 3. 将选择的数据添加到 g_vopen_data_actors 及 g_vopen_data
+ * 4. 添加着点回调
  */
 void MainWindow::selectFirst()
 {
     if (g_mid_actor)
     {
-        leftrenderer->RemoveActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        leftrenderer->RemoveActor(g_vopen_data_actors.back());
         leftrenderer->RemoveActor(g_clipper_actor);
         rmRecentActorPoints();
         if (g_front_plane_actor)
             removeThePlane();
         midrender->RemoveActor(g_mid_actor);
         rightrender->RemoveActor(g_right_actor);
-        g_vopen_data_actors.push_back(g_mid_actor);
 
+        g_vopen_data_actors.push_back(g_mid_actor);
         g_vopen_data.push_back(g_mid_data);
+
         clearAllNodes(acContour, leftrenderer);
-        leftrenderer->AddActor(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
-        g_points_placer->AddProp(g_vopen_data_actors[g_vopen_data_actors.size() - 1]);
+        leftrenderer->AddActor(g_vopen_data_actors.back());
+        g_points_placer->AddProp(g_vopen_data_actors.back());
         assert(g_front_plane == NULL);
     }
     reRenderAll();
@@ -1339,7 +1362,13 @@ void MainWindow::selectFirst()
 
 
 /**
- * @brief SideBySideRenderWindowsQt::select Second
+ * 选择第二个输出（右下角）
+ * 步骤如下：
+ * 0. 删除左边窗口已经渲染的点和面及多余的actor
+ * 1. 清空右上角、右下角的数据
+ * 2. 将选择的数据渲染到左窗口
+ * 3. 将选择的数据添加到 g_vopen_data_actors 及 g_vopen_data
+ * 4. 添加着点回调
  */
 void MainWindow::selectSecond()
 {
@@ -1363,23 +1392,29 @@ void MainWindow::selectSecond()
 }
 
 
+/**
+ * 对用户绘制区域进行切割操作
+ */
 void MainWindow::cut()
 {
-    if ( CUTTING_MODE == 1 && g_vclick_points.size() > 2)
+    if ( CUTTING_MODE == 1 && g_vclick_points.size() > 2)   // 切割模式、且绘制的点数量大于2（即可以形成多边形）
     {
-        generateClipperData();
-        generateClippedData();  //draw in mid and right
+        generateClipperData();  // 生成切割柱体
+        generateClippedData();  // 对切割对象进行切割
 
-        midrender->SetActiveCamera(leftrenderer->GetActiveCamera());
+        midrender->SetActiveCamera(leftrenderer->GetActiveCamera());  // 对窗口相机进行同步（视角同步）
         rightrender->SetActiveCamera(leftrenderer->GetActiveCamera());
-        g_front_plane = NULL;
-        if (g_front_plane_actor)
+        g_front_plane = NULL;                                         // 平面数据置空
+        if (g_front_plane_actor)                                      // 移除平面显示
             removeThePlane();
     }
     reRenderAll();
 }
 
 
+/**
+ * 相机视角（普通视角）
+ */
 void MainWindow::cameraMode()
 {
     cout << "camera mode" << endl;
@@ -1388,6 +1423,9 @@ void MainWindow::cameraMode()
     this->renderWindowInteractor->SetInteractorStyle(style);
 }
 
+/**
+ * 物体视角（可对物体进行旋转平移等操作）
+ */
 void MainWindow::objectMode()
 {
     cout << "object mode" << endl;
@@ -1396,6 +1434,16 @@ void MainWindow::objectMode()
     this->renderWindowInteractor->SetInteractorStyle(style);
 }
 
+
+/**
+ * 导入数据
+ * 导入的数据用于作拼接操作，数据将用 g_vimport_data 及 g_vimport_data_actors 进行维护
+ * 步骤如下：
+ * 0. 预准备操作，切割状态置为false，移除点、面
+ * 1. 导入数据
+ * 2. g_vimport_data 及 g_vimport_data_actors 的维护
+ * 3. 渲染
+ */
 void MainWindow::importFile()
 {
     CUTTING_MODE = 0;
@@ -1428,50 +1476,47 @@ void MainWindow::importFile()
 }
 
 
-
+/**
+ * import进来的数据与切割好的数据进行合并-union操作
+ * 步骤如下：
+ * ！！[注意]：由于doTrans(), doRot()只是对import进来的数据的actor进行操作
+ * 0. 获取import进来的ear的actor的变换矩阵（包含从刚开始导入到现在的变换信息）
+ * 1. 获取源数据（切割对象）的actor的变换矩阵（所有在物体视角中的变换信息都在变换矩阵里）
+ * 2. 通过变换得到ear及源数据的真实数据（actor对应的真实数据）
+ * 3. 进行布尔运算
+ * 4. 维护输出结果到 g_vopen_data 及 g_vopen_data_actors
+ */
 void MainWindow::makeUnion()
 {
     if (CUTTING_MODE == 0 && g_vimport_data.size() > 0) {
         cout << "processing union" << endl;
 
-        vtkSmartPointer<vtkMatrix4x4> mat =
-            vtkSmartPointer<vtkMatrix4x4>::New();
-
-        vtkSmartPointer<vtkActor> & earActor1 = g_vimport_data_actors[g_vimport_data_actors.size() - 1];
+        vtkSmartPointer<vtkMatrix4x4> mat = vtkSmartPointer<vtkMatrix4x4>::New();
+        vtkSmartPointer<vtkActor> & earActor1 = g_vimport_data_actors.back();
         earActor1->GetMatrix(mat);
-        vtkSmartPointer<vtkTransform> trans =
-            vtkSmartPointer<vtkTransform>::New();
+        vtkSmartPointer<vtkTransform> trans = vtkSmartPointer<vtkTransform>::New();
         trans->SetMatrix(mat);
-        vtkSmartPointer<vtkPolyData>  ear1 =
-            vtkSmartPointer<vtkPolyData>::New();
-        ear1 = g_vimport_data[g_vimport_data.size() - 1];
-        vtkSmartPointer<vtkTransformPolyDataFilter> transdata =
-            vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+        vtkSmartPointer<vtkPolyData>  ear1 = vtkSmartPointer<vtkPolyData>::New();
+        ear1 = g_vimport_data.back();
+        vtkSmartPointer<vtkTransformPolyDataFilter> transdata = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
         transdata->SetInputData(ear1);
         transdata->SetTransform(trans);
         transdata->Update();
         ear1 = transdata->GetOutput();
 
-        vtkSmartPointer<vtkMatrix4x4> mat1 =
-            vtkSmartPointer<vtkMatrix4x4>::New();
-        vtkSmartPointer<vtkActor> & sActor = g_vopen_data_actors[g_vopen_data_actors.size() - 1];
+        vtkSmartPointer<vtkMatrix4x4> mat1 = vtkSmartPointer<vtkMatrix4x4>::New();
+        vtkSmartPointer<vtkActor> & sActor = g_vopen_data_actors.back();
         sActor->GetMatrix(mat1);
-
-        vtkSmartPointer<vtkTransform> trans1 =
-            vtkSmartPointer<vtkTransform>::New();
+        vtkSmartPointer<vtkTransform> trans1 = vtkSmartPointer<vtkTransform>::New();
         trans1->SetMatrix(mat1);
-        vtkSmartPointer<vtkPolyData> source =
-            vtkSmartPointer<vtkPolyData>::New();
-        source = g_vopen_data[g_vopen_data.size() - 1];
-        vtkSmartPointer<vtkTransformPolyDataFilter> transdata1 =
-            vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+        vtkSmartPointer<vtkPolyData> source =  g_vopen_data.back();
+        vtkSmartPointer<vtkTransformPolyDataFilter> transdata1 = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
         transdata1->SetInputData(source);
         transdata1->SetTransform(trans1);
         transdata1->Update();
         source = transdata1->GetOutput();
 
-        vtkSmartPointer<vtkBooleanOperationPolyDataFilter> booleanOperation =
-            vtkSmartPointer<vtkBooleanOperationPolyDataFilter>::New();
+        vtkSmartPointer<vtkBooleanOperationPolyDataFilter> booleanOperation = vtkSmartPointer<vtkBooleanOperationPolyDataFilter>::New();
         booleanOperation->SetOperationToUnion();
         booleanOperation->SetInputData(0, source); // set the input data
         booleanOperation->SetInputData(1, ear1);
@@ -1497,6 +1542,9 @@ void MainWindow::makeUnion()
 }
 
 
+/**
+ * 添加平面
+ */
 void MainWindow::addPaper()
 {
     parallelplane(leftrenderer, g_front_plane_actor);
@@ -1515,7 +1563,7 @@ void MainWindow::reRenderAll()
     this->qvtkWidgetRight->GetRenderWindow()->GetInteractor()->Render();
 }
 
-
+//手动将‘耳朵’缩小的函数。在默认情况下以0.9为倍数缩小，也可以手动输入缩小倍数。
 void MainWindow::scaling_down()
 {
     vtkSmartPointer<vtkPolyData>  ear = g_vimport_data[g_vimport_data.size() - 1];
@@ -1587,6 +1635,8 @@ void MainWindow::scaling_down()
     reRenderAll();
 }
 
+
+//将‘耳朵’放大的函数。默认情况下以1.1为倍数进行放大，也可手动输入放大倍数。
 void MainWindow::scaling_up()
 {
     vtkSmartPointer<vtkPolyData>  ear = g_vimport_data[g_vimport_data.size() - 1];
